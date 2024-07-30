@@ -5,6 +5,7 @@ import cors from "cors";
 import CONNECT_DB from "./config/conn.js";
 import cookieParser from "cookie-parser";
 import passport from "passport";
+import routes from "./routes/web.js";
 const app = express();
 const port = process.env.PORT || 8000;
 
@@ -31,6 +32,8 @@ app.use(passport.initialize());
 // DB Connection
 CONNECT_DB(process.env.DB_URL);
 
+// routes
+app.use('/api/user/',routes)
 app.listen(port,()=>{
     console.log(`http://localhost:${port}`);
 })
