@@ -1,6 +1,7 @@
 import { response } from "express";
-import userModel from "../models/users.js";
+import permissionsModel from "../models/permissions.js";
 import rolesModel from "../models/roles.js";
+import userModel from "../models/users.js";
 import bcrypt from "bcrypt";
 import generateTokens from "../utils/generateTokens.js";
 class userController {
