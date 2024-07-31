@@ -1,9 +1,9 @@
-import { response } from "express";
 import permissionsModel from "../models/permissions.js";
 import rolesModel from "../models/roles.js";
 import userModel from "../models/users.js";
 import bcrypt from "bcrypt";
 import generateTokens from "../utils/generateTokens.js";
+import { populate } from "dotenv";
 class userController {
     static userRegistration = async (req,res) => {
         try {
@@ -70,11 +70,12 @@ class userController {
                 ]
             }).populate({
                 path: 'role',
-                populate: {
-                  path: 'permissions'
+                populate:{
+                    path: 'permissions',
+                    model: permissionsModel
                 }
-              });
-            console.log(user)
+            });
+            console.log(user.role)
             if(!user){
                 return res.status(400).json({
                     status: "Failed", 
