@@ -4,6 +4,8 @@ import userModel from "../models/users.js";
 import bcrypt from "bcrypt";
 import generateTokens from "../utils/generateTokens.js";
 import { populate } from "dotenv";
+import TokenCookies from "../utils/setTokenCookies.js";
+import refreshAccessToken from "../utils/refreshAccessToken.js";
 class userController {
     static userRegistration = async (req,res) => {
         try {
@@ -70,12 +72,11 @@ class userController {
                 ]
             }).populate({
                 path: 'role',
-                populate:{
-                    path: 'permissions',
-                    model: permissionsModel
-                }
+                // populate:{
+                //     path: 'permissions',
+                //     model: permissionsModel
+                // }
             });
-            console.log(user.role)
             if(!user){
                 return res.status(400).json({
                     status: "Failed", 
@@ -86,13 +87,27 @@ class userController {
             if (!isPasswordValid) {
                 return res.status(400).json({ status: "Failed", message: "Invalid email/username or password." });
             }
-            // .Access Token
+            // .Generate Token
             const {accesstoken, refreshtoken }  =  await generateTokens(user);
+
+            // Set Cookies
+            TokenCookies(res,accesstoken,refreshtoken);
 
             // Send success response with tokens
             res.status(200).json({
-                user: {id: user._id, email: user.email, username: user.username, role: user.role}
+                status: "Success",
+                message: "Login Successfull",
+                user: {
+                    id: user._id,
+                    email: user.email,
+                    username: user.username,
+                    role: user.role
+                },
+                accesstoken: accesstoken,
+                refreshtoken: refreshtoken,
+                is_auth: true
             });
+
         } catch (error) {
             console.log(error);
             res.status(500).json({
@@ -100,6 +115,32 @@ class userController {
                 message: "Unable to Login Please try again!"
             });
         }
+    }
+    // get new access token or refresh token
+    static getNewAccessToken = async(req,res) => {
+           try {
+             
+            // Get New access token using refresh token
+            const {newAccessToken, newRefreshToken} =  await refreshAccessToken(req,res);
+           
+            // set new access token to cookies
+            TokenCookies(res,newAccessToken,newRefreshToken);
+            
+                // Send success response with tokens
+                res.status(200).json({
+                    status: "Success",
+                    message: "New Token generated",
+                    accesstoken: newAccessToken,
+                    refreshtoken: newRefreshToken,
+                });
+
+            } catch (error) {
+            console.log(error)
+             res.status(500).json({
+                status:"Failed",
+                message: "Unable to generate token"
+             })
+           }
     }
 }
 

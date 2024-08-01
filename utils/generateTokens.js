@@ -14,11 +14,8 @@ const generateTokens = async (user) => {
         // Refresh Token
         const refreshtoken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET, {expiresIn: '7d'});
 
-        // Find user refresh token if exist already
-        const userRefreshToken = await refreshTokenModel.findOne({userId: user._id});
-
-        // Remove existing refresh token
-        if(userRefreshToken) await userRefreshToken.remove();
+        // Find user refresh token and delete if exist already
+        const userRefreshToken = await refreshTokenModel.findOneAndDelete({userId: user._id});
 
         // Save new refresh token
         await new refreshTokenModel({userId: user._id, token: refreshtoken}).save();
