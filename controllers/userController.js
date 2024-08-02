@@ -142,6 +142,22 @@ class userController {
              })
            }
     }
+    // User profile 
+    static userProfile = async(req,res)=> {
+        try {
+            const user =  req.user;
+            res.status(200).json({
+                status: "Success",
+                message: "user find",
+                user: req.user
+            })
+        } catch (error) {
+            return res.status(500).json({
+                status: "Failed",
+                message: "Cannot get user"
+            });
+        }
+    }
 }
 
 export default userController;
