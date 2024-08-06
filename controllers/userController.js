@@ -6,6 +6,7 @@ import generateTokens from "../utils/generateTokens.js";
 import { populate } from "dotenv";
 import TokenCookies from "../utils/setTokenCookies.js";
 import refreshAccessToken from "../utils/refreshAccessToken.js";
+import refreshTokenModel from "../models/userrefreshToken.js";
 class userController {
     static userRegistration = async (req,res) => {
         try {
@@ -141,6 +142,39 @@ class userController {
                 message: "Unable to generate token"
              })
            }
+    }
+    // User profile 
+    static userProfile = async(req,res)=> {
+        try {
+            const user =  req.user;
+            res.status(200).json({
+                status: "Success",
+                message: "user find",
+                user: req.user
+            })
+        } catch (error) {
+            return res.status(500).json({
+                status: "Failed",
+                message: "Cannot get user"
+            });
+        }
+    }
+
+    // Logout
+    static userLogout = async (req,res) => {
+        try {
+            const refreshToken = req.cookies.refreshToken;
+            await refreshTokenModel.findOneAndUpdate({
+                token: refreshToken
+            });
+                 // Clear access token and refresh token cookies
+                res.clearCookie('accessToken');
+                res.clearCookie('refreshToken');
+                res.status(200).json({ status: "success", message: "Logout successful" });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ status: "failed", message: "Unable to logout, please try again later" });
+        }
     }
 }
 

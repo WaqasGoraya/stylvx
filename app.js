@@ -6,6 +6,7 @@ import CONNECT_DB from "./config/conn.js";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import routes from "./routes/web.js";
+import './config/jwt-strategy.js';
 const app = express();
 const port = process.env.PORT || 8000;
 

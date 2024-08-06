@@ -4,7 +4,7 @@ const TokenCookies = (res,newAccessToken, newRefreshToken) => {
     res.cookie('accessToken',newAccessToken,{
         httpOnly: true,
         secure: true,
-        maxAge: 15 * 60 * 1000
+        maxAge: 1 * 60 * 1000
     });
     
     // Refresh Token Cookie
