@@ -7,6 +7,8 @@ import { populate } from "dotenv";
 import TokenCookies from "../utils/setTokenCookies.js";
 import refreshAccessToken from "../utils/refreshAccessToken.js";
 import refreshTokenModel from "../models/userrefreshToken.js";
+import jwt from 'jsonwebtoken';
+import transporter from "../config/mailConfig.js";
 class userController {
     static userRegistration = async (req,res) => {
         try {
@@ -176,6 +178,41 @@ class userController {
             res.status(500).json({ status: "failed", message: "Unable to logout, please try again later" });
         }
     }
+    // Send reset password email
+    static sendResetPasswordEmail = async (req,res) => {
+        try {
+            const {email} = req.body;
+            if(!email){
+               return res.status(400).json({
+                    status: "Failed",
+                    message: "Email is required"
+                });
+            }
+            // Find user by email
+            const user = await userModel.findOne({email});
+            if(!user){
+                return res.status(400).json({ status: "Failed", message: "Invalid Email"}); }
+            const token = jwt.sign({userId: user._id}, process.env.JWT_ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
+            // Generate link for reset password
+            const link = `${req.protocol}://${process.env.FRONTEND_HOST}/account/reset-password-confirm/${user._id}/${token}`;
+            console.log(link);
+            // Send Email
+            await transporter.sendMail({
+                from: `${process.env.EMAIL_FROM}👻`, // sender address
+                to: user.email, // list of receivers
+                subject: "Reset Password Link✔", // Subject line
+                html: `<p>Hello ${user.name},</p><p>Please <a href="${link}">click here</a> to reset your password.</p>`
+              });
+              // Send success response
+            return res.status(200).json({ status: "success", message: "Password reset email sent. Please check your email." });
+        } catch (error) {
+            console.error(error)
+           return res.status(500).json({
+                status: "Failed",
+                message: "Unable to send email please try again!"
+            })
+        }
+    } 
 }
 
 export default userController;
