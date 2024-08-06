@@ -8,6 +8,7 @@ const router = express.Router();
 router.post('/register',userController.userRegistration);
 router.post('/login',userController.userLogin);
 router.post('/refresh-token',userController.getNewAccessToken);
+router.post('/reset-password', userController.sendResetPasswordEmail);
 
 // Protected Routes
 router.get('/profile', setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }), userController.userProfile);
