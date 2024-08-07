@@ -198,7 +198,7 @@ class userController {
             console.log(link);
             // Send Email
             await transporter.sendMail({
-                from: `${process.env.EMAIL_FROM}👻`, // sender address
+                from: process.env.EMAIL_FROM, // sender address
                 to: user.email, // list of receivers
                 subject: "Reset Password Link✔", // Subject line
                 html: `<p>Hello ${user.name},</p><p>Please <a href="${link}">click here</a> to reset your password.</p>`
