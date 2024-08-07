@@ -195,13 +195,12 @@ class userController {
             const token = jwt.sign({userId: user._id}, process.env.JWT_ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
             // Generate link for reset password
             const link = `${req.protocol}://${process.env.FRONTEND_HOST}/account/reset-password-confirm/${user._id}/${token}`;
-            console.log(link);
             // Send Email
             await transporter.sendMail({
                 from: process.env.EMAIL_FROM, // sender address
                 to: user.email, // list of receivers
                 subject: "Reset Password Link✔", // Subject line
-                html: `<p>Hello ${user.name},</p><p>Please <a href="${link}">click here</a> to reset your password.</p>`
+                html: `<p>Hello ${user.username},</p><p>Please <a href="${link}">click here</a> to reset your password.</p>`
               });
               // Send success response
             return res.status(200).json({ status: "success", message: "Password reset email sent. Please check your email." });
@@ -213,6 +212,38 @@ class userController {
             })
         }
     } 
+    static userPasswordReset = async(req,res) => {
+        try {
+            const {password,passwordConfirm} = req.body;
+            const {id,token} = req.params;
+
+            // Check if password and password_confirmation are provided
+            if (!password || !passwordConfirm) { return res.status(400).json({ status: "failed", message: "New Password and Confirm New Password are required" })}
+            
+            // Check if password and password_confirmation match
+            if(password !== passwordConfirm){ return res.status(400).json({ status: "Failed", message: "Password and Confirm Password not match" })}
+           
+            // Find user by id
+            const user = await userModel.findOne({_id:id});
+            if(!user){ return res.status(400).json({ status: "Failed",message: "User not found" })}
+            // secert
+            const secret =  process.env.JWT_ACCESS_TOKEN_SECRET
+            // Validate token
+            jwt.verify(token,secret);
+            // Set new password
+            const newPassword = await bcrypt.hash(password,10);
+            // Update user
+            await userModel.findByIdAndUpdate(id, {password: newPassword});
+            // Send success response
+            res.status(200).json({ status: "success", message: "Password reset successfully" });
+        } catch (error) {
+            console.log(error)
+            if(error.name === "TokenExpiredError"){
+                return res.status(400).json({ status: "failed", message: "Password reset link expired. Please try again later." });
+            }
+            return res.status(500).json({ status: "failed", message: "Unable to reset password. Please try again later." });
+        }
+    }
 }
 
 export default userController;
