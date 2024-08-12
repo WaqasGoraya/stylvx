@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { createPortal } from 'react-dom';
 import LoginModal from "../../pages/LoginModal"
+
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -186,13 +188,13 @@ const Header = () => {
                 <a className="nav-link" href="#">TRENDING</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="blog.html">BLOGS</a>
+                <Link className="nav-link" to="/blogs">BLOGS</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="wikiprofile.html">WIKI</a>
+                <Link className="nav-link" to="/wiki">WIKI</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="collection.html">COLLECTIONS</a>
+                <Link className="nav-link" to="/collections">COLLECTIONS</Link>
               </li>
             </ul>
           </div>
@@ -200,7 +202,8 @@ const Header = () => {
       </div>
     </div>
   </header>
-  <LoginModal show={showModal} handleClose={handleCloseModal} />
+  {showModal && createPortal(<LoginModal handleClose={handleCloseModal} />,document.body)}
+  
     </>
   )
 }

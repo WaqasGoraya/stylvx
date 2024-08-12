@@ -1,6 +1,12 @@
-import React from 'react'
+import {useState} from 'react'
+import { createPortal } from 'react-dom';
+import LoginModal from "./LoginModal"
 
 const Register = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
   return (
     <>
 <div className="signup-div">
@@ -87,13 +93,14 @@ const Register = () => {
 
             <p className="mt-4 already-signup">
               Already have an account?
-              <a href="#" className="text-login-signup" data-bs-toggle="modal" data-bs-target="#exampleModal">Login </a>
+              <a href="#" className="text-login-signup" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={handleShowModal}>Login </a>
             </p>
           </div>
         </div>
       </div>
     </div>
   </div>
+  {showModal && createPortal(<LoginModal handleClose={handleCloseModal} />,document.body)}
     </>
   )
 }

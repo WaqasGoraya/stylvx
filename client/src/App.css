@@ -644,17 +644,6 @@ body {
   margin-top: 51px;
 }
 
-.modalCenter {
-  top: 46% !important;
-  transform: translateY(-50%) !important;
-
-}
-
-.modal-content {
-  width: 85% !important;
-  max-height: auto;
-}
-
 .modal {
   z-index: 99999;
   box-shadow: 0px 0px 64px 0px rgba(0, 0, 0, 0.75);
@@ -676,8 +665,9 @@ body {
 .modal-close.modal-header {
   border: 0;
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 17px;
+  padding: 0;
+  right: 17px !important;
   color: #000000 !important;
 }
 
@@ -1650,7 +1640,7 @@ body {
 
   .modalCenter {
 
-    top: 7% !important;
+    top: 10% !important;
     transform: translateY(0) !important;
   }
 
@@ -1661,10 +1651,6 @@ body {
 
   .modal-inner-div {
     padding-top: 55px;
-  }
-
-  .modal-content {
-    width: 98% !important;
   }
 
   .modal-ul-login {
@@ -1720,6 +1706,10 @@ body {
   .about-black-div .content-image-sec {
     width: 100% !important;
     height: 265px !important;
+  }
+  
+  .modal-content {
+    width: 100% !important;
   }
 
   .wiki-short-outer .wiki-cards-outer .tabcontent .wiki-cards .wiki-card-img {
@@ -2473,21 +2463,36 @@ body {
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
-  width: 94vw !important;
+  width: 94vw;
   pointer-events: auto;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, .2);
   border-radius: .3rem;
   outline: 0;
-  margin-top: 4rem;
 }
 
-.modal-dialog {
-  max-width: 500px;
-  margin: 0 !important;
-  padding: 0rem;
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: var(--bs-modal-width);
+        margin-right: unset !important;
+        margin-left: unset !important;
+    }
+
 }
+
+.modal-dialog{
+    text-align: -webkit-center !important;
+}
+.modalCenter {
+    top: 8%;
+    transform: translateY(-50%);
+}
+
+.modal{
+    --bs-modal-width: auto !important;
+}
+
 
 .modal-header {
   display: -ms-flexbox;

@@ -17,12 +17,10 @@ $(document).ready(function () {
             },
         },
     });
-});
 // home slider-end
 
 
 // About Us page slider-start
-$(document).ready(function () {
     $(".our-team-sec .owl-carousel").owlCarousel({
         autoplay: true,
         loop: true,
@@ -40,10 +38,10 @@ $(document).ready(function () {
             },
         },
     });
-});
+
 // About Us page slider-end
 
-
+});
 
 
 // radio btn js code start
