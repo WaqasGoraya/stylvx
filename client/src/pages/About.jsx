@@ -3,7 +3,7 @@ import InnerBanner from "../components/InnerBanner/InnerBanner"
 const About = () => {
   return (
     <>
-        <InnerBanner/>
+        <InnerBanner title="About Us"/>
         <section className="content-sec">
     <div className="container">
       <p className="my-4 text-center">

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 const Footer = () => {
   return (
     <>
@@ -68,9 +69,9 @@ const Footer = () => {
               <div className="d-flex footer-div-col">
                 <div className="box1-footer">
                   <ul className="p-0 footer-ultxt">
-                    <li><a href="./about.html"> <img src="/images/footervector.png" height="11" /> <span>About Us</span></a>
+                    <li><Link to="/about"> <img src="/images/footervector.png" height="11" /> <span>About Us</span></Link>
                     </li>
-                    <li><a href="./ourpartner.html"> <img src="/images/footervector.png" height="11" /> <span>Partner</span></a>
+                    <li><Link to="/partner"> <img src="/images/footervector.png" height="11" /> <span>Partner</span></Link>
                     </li>
                   </ul>
                   <h5>Let’s Connect</h5>
@@ -91,9 +92,9 @@ const Footer = () => {
               <div className="d-flex footer-div-col">
                 <div className="box1-footer">
                   <ul className="p-0 footer-ultxt">
-                    <li><a href="faq.html"><img src="/images/footervector.png" height="11" /> <span>FAQ</span></a></li>
-                    <li><a href="contactus.html"><img src="/images/footervector.png" height="11" /> <span>Contact
-                          Us</span></a></li>
+                    <li><Link to="/faqs"><img src="/images/footervector.png" height="11" /> <span>FAQ</span></Link></li>
+                    <li><Link to="/contact"><img src="/images/footervector.png" height="11" /> <span>Contact
+                          Us</span></Link></li>
                     <li><a href="#"><img src="/images/footervector.png" height="11" /> <span>Feedback</span></a>
                     </li>
                   </ul>
@@ -108,15 +109,13 @@ const Footer = () => {
               <div className="d-flex footer-div-col">
                 <div className="box1-footer">
                   <ul className="p-0 footer-ultxt">
-                    <li><a href="./termsofuse.html"><img src="/images/footervector.png" height="11" /> <span>Terms of
-                          Use</span></a></li>
-                    <li><a href="./privacypolicy.html"><img src="/images/footervector.png" height="11" /> <span>Privacy
-                          Policy</span></a></li>
-                    <li><a href="./cookiepolicy.html"><img src="/images/footervector.png" height="11" /> <span>Cookie
-                          Policy</span></a></li>
-                    <li><a href="./cookiesetting.html"><img src="/images/footervector.png" height="11" /> <span>Cookie</span></a>
-                    </li>
-                    <li><a href="#"><img src="/images/footervector.png" height="11" /> <span>Setting</span></a>
+                    <li><Link to="/terms-of-use"><img src="/images/footervector.png" height="11" /> <span>Terms of
+                          Use</span></Link></li>
+                    <li><Link to="/privacy-policy"><img src="/images/footervector.png" height="11" /> <span>Privacy
+                          Policy</span></Link></li>
+                    <li><Link to="/cookies-policy"><img src="/images/footervector.png" height="11" /> <span>Cookies
+                          Policy</span></Link></li>
+                    <li><Link to="/cookies-setting"><img src="/images/footervector.png" height="11" /> <span>Cookies Setting</span></Link>
                     </li>
                   </ul>
                 </div>
