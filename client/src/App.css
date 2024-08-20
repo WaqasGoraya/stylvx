@@ -190,7 +190,7 @@ body {
 .video-background {
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 600px;
   overflow: hidden;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
   display: flex;
@@ -1720,9 +1720,9 @@ body {
     padding: 15px;
   }
 
-  .video-background {
+  /* .video-background {
     height: 240px !important;
-  }
+  } */
 
   .hero-txt-fashion {
     font-size: 22px;
@@ -1812,9 +1812,9 @@ body {
     margin: 0 auto;
   }
 
-  .navigation-bar-second {
+  /* .navigation-bar-second {
     background: white;
-  }
+  } */
 
   .navbar-nav :not(:last-child) {
     margin-bottom: 15px;
@@ -2551,7 +2551,7 @@ body {
 
 .logo-pos {
   position: absolute;
-  top: 250px;
+  top: 180px;
   /* font-size: 200px; */
   opacity: 0.5;
 }

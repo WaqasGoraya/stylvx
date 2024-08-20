@@ -12,26 +12,19 @@ import transporter from "../config/mailConfig.js";
 class userController {
     static userRegistration = async (req,res) => {
         try {
-            const {username, email, password, passwordConfirm} = req.body;
+            const {firstname, lastname ,email, password, password_confirm} = req.body;
             // Check all fields are provided
-            if(!username || ! email || !password || !passwordConfirm){
+            if(!firstname || !lastname || ! email || !password || !password_confirm){
                 return res.status(400).json({status: "Failed", message: "All fields are required!"});
             }else{
-                // Check email and username is unique
+                // Check email is unique
                 const emailExists = await userModel.findOne({ email: email });
-                const usernameExists = await userModel.findOne({ username: username });
                 // return false;
-                if(emailExists && usernameExists){
-                return res.status(400).json({status: "Failed", message: "Email and username already exist!"});
+                if(emailExists){
+                return res.status(400).json({status: "Failed", message: "Email already exist!"});
                 }
-                if (emailExists) {
-                    return res.status(400).json({ status: "Failed", message: "Email already exists!" });
-                }
-                if (usernameExists) {
-                    return res.status(400).json({ status: "Failed", message: "Username already exists!" });
-                } 
                 // Check Password Confirmation
-                if(password !== passwordConfirm){
+                if(password !== password_confirm){
                     return res.status(400).json({status: "Failed", message: "Password and Confirm Password does'nt match!"});
                 }
                 // Generate password Hash
@@ -40,12 +33,12 @@ class userController {
                 // roles
                 const userRole = await rolesModel.findOne({name: 'user'});
                 //  Save New User into DB
-                const newUser = await new userModel({username,email, password:hashPassword,role: userRole._id}).save();
+                const newUser = await new userModel({firstname,lastname, email, password:hashPassword,role: userRole._id}).save();
 
                 return res.status(201).json({
                     status: "Success",
                     message: "User registerd success",
-                    user: {id: newUser._id, username: newUser.username, email: newUser.email}
+                    user: {id: newUser._id, firstname: newUser.firstname, lastname: newUser.lastname, email: newUser.email}
                 });
 
             }
@@ -68,12 +61,7 @@ class userController {
                     message: "All Fields are required"
                 });
             }
-            const user = await userModel.findOne({
-                $or: [
-                    { email: email },
-                    { username: email }
-                ]
-            }).populate({
+            const user = await userModel.findOne({ email: email}).populate({
                 path: 'role',
                 // populate:{
                 //     path: 'permissions',
@@ -83,12 +71,12 @@ class userController {
             if(!user){
                 return res.status(400).json({
                     status: "Failed", 
-                    message: "Invalid email/username or password."
+                    message: "Invalid email or password."
                 });
             }
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if (!isPasswordValid) {
-                return res.status(400).json({ status: "Failed", message: "Invalid email/username or password." });
+                return res.status(400).json({ status: "Failed", message: "Invalid email or password." });
             }
             // .Generate Token
             const {accesstoken, refreshtoken }  =  await generateTokens(user);
@@ -103,7 +91,8 @@ class userController {
                 user: {
                     id: user._id,
                     email: user.email,
-                    username: user.username,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
                     role: user.role
                 },
                 accesstoken: accesstoken,
@@ -214,14 +203,14 @@ class userController {
     } 
     static userPasswordReset = async(req,res) => {
         try {
-            const {password,passwordConfirm} = req.body;
+            const {password,password_confirm} = req.body;
             const {id,token} = req.params;
 
             // Check if password and password_confirmation are provided
-            if (!password || !passwordConfirm) { return res.status(400).json({ status: "failed", message: "New Password and Confirm New Password are required" })}
+            if (!password || !password_confirm) { return res.status(400).json({ status: "failed", message: "New Password and Confirm New Password are required" })}
             
             // Check if password and password_confirmation match
-            if(password !== passwordConfirm){ return res.status(400).json({ status: "Failed", message: "Password and Confirm Password not match" })}
+            if(password !== password_confirm){ return res.status(400).json({ status: "Failed", message: "Password and Confirm Password not match" })}
            
             // Find user by id
             const user = await userModel.findOne({_id:id});

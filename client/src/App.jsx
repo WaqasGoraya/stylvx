@@ -15,12 +15,16 @@ import CookiesSetting from './pages/CookiesSetting';
 import Blogs from './pages/Blogs';
 import Collections from './pages/Collections';
 import Wiki from './pages/Wiki';
+import ScrollToTop from './components/Scroll/ScrollToTop ';
+import { Toaster } from 'react-hot-toast';
 function App() {
   return (
     <>
     
     <BrowserRouter>
     <Layout>
+    <ScrollToTop/>
+    <Toaster/>
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/about' element={<About/>} />
