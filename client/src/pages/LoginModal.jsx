@@ -2,6 +2,9 @@ import { useState } from 'react';
 import {Link} from 'react-router-dom'
 import { useFormik } from 'formik';
 import { loginSchema } from '../formValidations/Schema';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { useAuth } from "../context/authContext"
 const initialValues = {
     email:"",
     password:""
@@ -15,12 +18,31 @@ const LoginModal = ({ handleClose }) => {
         }
     };
     const [loading, setLoading] = useState(false)
+    const [auth,setAuth] = useAuth()
     const {values, errors, handleBlur, handleChange, handleSubmit} = useFormik({
         initialValues,
         validationSchema: loginSchema,
-        onSubmit: (values) => {
-            setLoading(true)
-            console.log(values)
+        onSubmit: async(values) => {
+            try {
+                setLoading(true)
+                const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/login`,values);
+                if(response.data && response.data.status === 'Success'){
+                    setAuth({
+                        ...auth,
+                        user:response.data.user
+                    });
+                    localStorage.setItem('auth',JSON.stringify(response.data));
+                    toast.success(response.data.message)
+
+                }else{
+                    toast.error(response.data.message)
+                }
+                setLoading(false)
+            } catch (error) {
+                console.log(error)
+                toast.error('Something went wrong!')
+                setLoading(false);
+            }
         }
     });
     return (

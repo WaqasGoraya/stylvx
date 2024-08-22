@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Layout from './components/Layout/Layout'
 import Home from './pages/Home'
 import About from './pages/about'
@@ -20,8 +20,6 @@ import { Toaster } from 'react-hot-toast';
 function App() {
   return (
     <>
-    
-    <BrowserRouter>
     <Layout>
     <ScrollToTop/>
     <Toaster/>
@@ -42,7 +40,6 @@ function App() {
         <Route path='*' element={<NotFound/>} />
       </Routes>
       </Layout>
-    </BrowserRouter>
     </>
   )
 }

@@ -15,17 +15,17 @@ class userController {
             const {firstname, lastname ,email, password, password_confirm} = req.body;
             // Check all fields are provided
             if(!firstname || !lastname || ! email || !password || !password_confirm){
-                return res.status(400).json({status: "Failed", message: "All fields are required!"});
+                return res.status(200).json({status: "Failed", message: "All fields are required!"});
             }else{
                 // Check email is unique
                 const emailExists = await userModel.findOne({ email: email });
                 // return false;
                 if(emailExists){
-                return res.status(400).json({status: "Failed", message: "Email already exist!"});
+                return res.status(200).json({status: "Failed", message: "Email already exist!"});
                 }
                 // Check Password Confirmation
                 if(password !== password_confirm){
-                    return res.status(400).json({status: "Failed", message: "Password and Confirm Password does'nt match!"});
+                    return res.status(200).json({status: "Failed", message: "Password and Confirm Password does'nt match!"});
                 }
                 // Generate password Hash
                 const hashPassword = await bcrypt.hash(password,10);
@@ -56,7 +56,7 @@ class userController {
         try {
             const {email, password} = req.body;
             if(!email || !password){
-                return res.status(400).json({
+                return res.status(200).json({
                     status: "Failed",
                     message: "All Fields are required"
                 });
@@ -69,14 +69,14 @@ class userController {
                 // }
             });
             if(!user){
-                return res.status(400).json({
+                return res.status(200).json({
                     status: "Failed", 
                     message: "Invalid email or password."
                 });
             }
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if (!isPasswordValid) {
-                return res.status(400).json({ status: "Failed", message: "Invalid email or password." });
+                return res.status(200).json({ status: "Failed", message: "Invalid email or password." });
             }
             // .Generate Token
             const {accesstoken, refreshtoken }  =  await generateTokens(user);

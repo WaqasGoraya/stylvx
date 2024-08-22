@@ -3,9 +3,10 @@ import { createPortal } from 'react-dom';
 import LoginModal from "./LoginModal"
 import { registerSchema } from '../formValidations/Schema';
 import {useFormik} from 'formik'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+
 
 const initialValues = {
   firstname: '',
@@ -20,6 +21,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  const navigate = useNavigate();
   // formik
   const { values, errors,  handleBlur, handleChange, handleSubmit} = useFormik({
       initialValues,
@@ -28,9 +30,12 @@ const Register = () => {
         try {
           setLoading(true)
           const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/register`, values);
-          console.log(response)
           if(response.data && response.data.status === 'Success'){
-              toast.success('Register Successfully')
+              resetForm();
+              toast.success(response.data.message)
+              setShowModal(true);
+          }else{
+            toast.error(response.data.message);
           }
           setLoading(false);
         } catch (error) {
