@@ -61,21 +61,24 @@ async function seedData() {
     const hash = await bcrypt.hash(password,10);
 
     const adminUser = new User({
-      username: 'admin',
+      firstname: 'admin',
+      lastname: 'user',
       email: 'admin@mail.com',
       password: hash,
       role: [adminRoleId]
     });
  
     const bloggerUser = new User({
-      username: 'blogger',
+      firstname: 'blogger',
+      lastname: 'user',
       email: 'salik@mailinator.com',
       password: hash,
       role: [bloggerRoleId]
     });
  
     const normalUser = new User({
-        username: 'waqas77',
+        firstname: 'Waqas',
+        lastname: 'Arif',
         email: 'waqas77@mailinator.com',
         password: hash,
         role: [userRoleId]
