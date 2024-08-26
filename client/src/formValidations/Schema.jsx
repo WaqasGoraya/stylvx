@@ -18,6 +18,6 @@ export const resetPasswordSchema = Yup.object({
     password_confirm: Yup.string().required('Confirm Password is required').oneOf([Yup.ref('password'),null],"Password and Confirm Password doesn't match")
 });
 
-export const resetPpasswordLinkSchema = Yup.object({
+export const resetpasswordLinkSchema = Yup.object({
     email: Yup.string().required('Email is required').email('Email is Invalid')
 });

@@ -31,8 +31,9 @@ const Header = () => {
   }, []);
   const handleLogout = async() => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/logout`);
-      if(response.data && response.data.message === 'Success'){
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/logout`,{},{withCredentials:true});
+      console.log(response)
+      if(response.data && response.data.status === 'success'){
         setAuth({
           ...auth,
           user:null

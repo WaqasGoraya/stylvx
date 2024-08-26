@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import { createPortal } from 'react-dom';
 import LoginModal from "./LoginModal"
 import { registerSchema } from '../formValidations/Schema';

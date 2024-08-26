@@ -1,6 +1,4 @@
-import { useAuth } from "../context/authContext";
 const Home = () => {
-  const [auth,setAuth] = useAuth()
   return (
     <>
     <div className="video-background">
@@ -240,7 +238,6 @@ const Home = () => {
       </div>
     </div>
   </section>
-  <pre>{JSON.stringify(auth.user)}</pre>
     </>
   )
 }

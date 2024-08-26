@@ -636,6 +636,7 @@ body {
   background-position: cover;
   box-shadow: 0px 0px 64px 0px rgba(0, 0, 0, 0.75);
   object-position: center;
+  height: 500px;
 
 }
 
@@ -713,6 +714,7 @@ body {
 .modal-stylvix1 {
   border-radius: 0 16px 16px 0;
   box-shadow: 0px 0px 64px 0px rgba(0, 0, 0, 0.75);
+  height: 500px;
 }
 
 .mymodal-login {
