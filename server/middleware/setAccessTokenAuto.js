@@ -3,7 +3,6 @@ import refreshAccessToken from "../utils/refreshAccessToken.js";
 import TokenCookies from "../utils/setTokenCookies.js";
 
 const setAccessTokenRefresh = async (req,res,next) => {
-    console.log(req.cookies)
     try {
         const accesstoken = req.cookies.accessToken;
        

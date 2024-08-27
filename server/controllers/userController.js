@@ -63,10 +63,10 @@ class userController {
             }
             const user = await userModel.findOne({ email: email}).populate({
                 path: 'role',
-                // populate:{
-                //     path: 'permissions',
-                //     model: permissionsModel
-                // }
+                populate:{
+                    path: 'permissions',
+                    model: permissionsModel
+                }
             });
             if(!user){
                 return res.status(200).json({
@@ -180,10 +180,10 @@ class userController {
             // Find user by email
             const user = await userModel.findOne({email});
             if(!user){
-                return res.status(400).json({ status: "Failed", message: "Invalid Email"}); }
+                return res.status(200).json({ status: "Failed", message: "Invalid Email"}); }
             const token = jwt.sign({userId: user._id}, process.env.JWT_ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
             // Generate link for reset password
-            const link = `${req.protocol}://${process.env.FRONTEND_HOST}/account/reset-password-confirm/${user._id}/${token}`;
+            const link = `${req.protocol}://${process.env.FRONTEND_HOST}/reset-password-confirm/${user._id}/${token}`;
             // Send Email
             await transporter.sendMail({
                 from: process.env.EMAIL_FROM, // sender address
@@ -207,14 +207,14 @@ class userController {
             const {id,token} = req.params;
 
             // Check if password and password_confirmation are provided
-            if (!password || !password_confirm) { return res.status(400).json({ status: "failed", message: "New Password and Confirm New Password are required" })}
+            if (!password || !password_confirm) { return res.status(200).json({ status: "failed", message: "New Password and Confirm New Password are required" })}
             
             // Check if password and password_confirmation match
-            if(password !== password_confirm){ return res.status(400).json({ status: "Failed", message: "Password and Confirm Password not match" })}
+            if(password !== password_confirm){ return res.status(200).json({ status: "Failed", message: "Password and Confirm Password not match" })}
            
             // Find user by id
             const user = await userModel.findOne({_id:id});
-            if(!user){ return res.status(400).json({ status: "Failed",message: "User not found" })}
+            if(!user){ return res.status(200).json({ status: "Failed",message: "User not found" })}
             // secert
             const secret =  process.env.JWT_ACCESS_TOKEN_SECRET
             // Validate token
@@ -228,7 +228,7 @@ class userController {
         } catch (error) {
             console.log(error)
             if(error.name === "TokenExpiredError"){
-                return res.status(400).json({ status: "failed", message: "Password reset link expired. Please try again later." });
+                return res.status(400).json({ status: "failed", message: "Password reset link expired. Please generate new link." });
             }
             return res.status(500).json({ status: "failed", message: "Unable to reset password. Please try again later." });
         }

@@ -15,6 +15,7 @@ import CookiesSetting from './pages/CookiesSetting';
 import Blogs from './pages/Blogs';
 import Collections from './pages/Collections';
 import Wiki from './pages/Wiki';
+import ResetPassword from './pages/ResetPassword';
 import ScrollToTop from './components/Scroll/ScrollToTop ';
 import { Toaster } from 'react-hot-toast';
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path='/blogs' element={<Blogs/>}/>
         <Route path='/wiki' element={<Wiki/>}/>
         <Route path='/collections' element={<Collections/>}/>
+        <Route path='/reset-password-confirm/:id/:token' element={<ResetPassword/>} />
         <Route path='*' element={<NotFound/>} />
       </Routes>
       </Layout>

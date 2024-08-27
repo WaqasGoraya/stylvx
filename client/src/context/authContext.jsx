@@ -1,4 +1,5 @@
 import { createContext, useEffect,useContext, useState } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -15,6 +16,7 @@ const AuthProvider = ({children}) => {
             user:ParseData.user
         })
     }
+    // eslint-disable-next-line
     },[]);
     return (
         <AuthContext.Provider value={[auth,setAuth]}>
