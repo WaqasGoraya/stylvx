@@ -1,7 +1,9 @@
 import {useState} from 'react'
+import { createPortal } from 'react-dom';
+import LoginModal from "./LoginModal"
 import { resetPasswordSchema } from '../formValidations/Schema';
 import {useFormik} from 'formik'
-import { useParams } from 'react-router-dom';
+import { useParams , useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -10,8 +12,12 @@ const initialValues = {
     password_confirm: ''
   }
 const ResetPassword = () => {
-    const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
     const {id,token} = useParams();
+    const navigate = useNavigate()
     const { values, errors,  handleBlur, handleChange, handleSubmit} = useFormik({
         initialValues,
         validationSchema: resetPasswordSchema,
@@ -23,6 +29,7 @@ const ResetPassword = () => {
                 resetForm();
                 toast.success(response.data.message)
                 setShowModal(true);
+                // navigate('/')
             }else{
               toast.error(response.data.message);
             }
@@ -91,6 +98,7 @@ const ResetPassword = () => {
       </div>
     </div>
     </div>
+    {showModal && createPortal(<LoginModal handleClose={handleCloseModal} />,document.body)}
     </>
   )
 }

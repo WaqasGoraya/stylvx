@@ -1,5 +1,5 @@
 import './App.css'
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Router } from "react-router-dom";
 import Layout from './components/Layout/Layout'
 import Home from './pages/Home'
 import About from './pages/about'
@@ -18,13 +18,16 @@ import Wiki from './pages/Wiki';
 import ResetPassword from './pages/ResetPassword';
 import ScrollToTop from './components/Scroll/ScrollToTop ';
 import { Toaster } from 'react-hot-toast';
+import DashboardLayout from './components/Layout/DashboardLayout';
+import PrivateRoutes from './routes/PrivateRoutes';
+import AdminDashboard from './dashboard/AdminDashboard';
 function App() {
   return (
     <>
-    <Layout>
-    <ScrollToTop/>
-    <Toaster/>
+      <Toaster/>
+      <ScrollToTop/>
       <Routes>
+        <Route element={<Layout/>}>
         <Route path='/' element={<Home/>} />
         <Route path='/about' element={<About/>} />
         <Route path='/register' element={<Register/>}/>
@@ -40,8 +43,15 @@ function App() {
         <Route path='/collections' element={<Collections/>}/>
         <Route path='/reset-password-confirm/:id/:token' element={<ResetPassword/>} />
         <Route path='*' element={<NotFound/>} />
+        </Route>
+        {/* dashboard routes */}
+        <Route path='/dashboard' element={<PrivateRoutes/>}>
+        <Route element={<DashboardLayout/>}>
+        <Route path='admin' element={<AdminDashboard />} />
+        </Route>
+        </Route>
       </Routes>
-      </Layout>
+      
     </>
   )
 }
