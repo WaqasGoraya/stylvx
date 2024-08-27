@@ -93,7 +93,14 @@ class userController {
                     email: user.email,
                     firstname: user.firstname,
                     lastname: user.lastname,
-                    role: user.role
+                    role: user.role.map(role => ({
+                        id: role._id,
+                        name: role.name,
+                        permissions: role.permissions.map(permission => ({
+                          id: permission._id,
+                          name: permission.name
+                        }))
+                      }))
                 },
                 accesstoken: accesstoken,
                 refreshtoken: refreshtoken,

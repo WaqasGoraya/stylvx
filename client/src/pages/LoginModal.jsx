@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useAuth } from "../context/authContext"
 import { createPortal } from 'react-dom';
 import ForgotPasswordModal from './ForgotPasswordModal';
+import rolesModel from '../../../server/models/roles';
 
 const initialValues = {
     email:"",
@@ -37,13 +38,21 @@ const LoginModal = ({ handleClose }) => {
                 setLoading(true)
                 const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/login`,values, {withCredentials:true});
                 if(response.data && response.data.status === 'Success'){
+                 
                     setAuth({
                         ...auth,
                         user:response.data.user
                     });
                     localStorage.setItem('auth',JSON.stringify(response.data));
+                    const role = response.data.user.role;
+                    const roleName=   role.map(role =>  role.name)
+                    console.log(roleName[0])
+                    if(roleName[0] == 'admin'){
+                        navigate('/dashboard/admin')
+                    }else{
+                        navigate('/')
+                    }
                     handleClose()
-                    navigate('/')
                     toast.success(response.data.message)
 
                 }else{
@@ -57,6 +66,12 @@ const LoginModal = ({ handleClose }) => {
             }
         }
     });
+    const handleGoogleLogin = async () => {
+        window.open(
+          `${import.meta.env.VITE_BASE_URL_SERVER}/auth/google`,
+          "_self"
+        );
+      }
     return (
         <>
         <div
@@ -130,7 +145,7 @@ const LoginModal = ({ handleClose }) => {
                                     <h6 className='mt-2 txt-or-modal'>OR</h6>
                                     <h5 className='mt-2 txt-sign-modal'>Sign in with</h5>
                                     <ul className='d-flex ul-modal-socialicon gap-3 p-0 mt-4'>
-                                        <li><Link to='#'><img src='/images/googleicon.png' alt="Google Icon"/></Link></li>
+                                        <li><Link to='#' onClick={handleGoogleLogin}><img src='/images/googleicon.png' alt="Google Icon"/></Link></li>
                                         <li><Link to='#'><img src='/images/facebookicon.png' alt="Facebook Icon"/></Link></li>
                                     </ul>
                                     <h6 className='txt-account-modal mb-4'>Don’t have an account? <span><Link to='/register' className='txt-register-modal' onClick={handleClose}>Register</Link></span></h6>
