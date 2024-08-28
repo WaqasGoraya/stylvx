@@ -21,6 +21,9 @@ import { Toaster } from 'react-hot-toast';
 import DashboardLayout from './components/Layout/DashboardLayout';
 import PrivateRoutes from './routes/PrivateRoutes';
 import AdminDashboard from './dashboard/AdminDashboard';
+import Users from './dashboard/pages/user/Users';
+import Products from './dashboard/pages/product/Products';
+import Roles from './dashboard/pages/roles/Roles';
 function App() {
   return (
     <>
@@ -48,6 +51,9 @@ function App() {
         <Route path='/dashboard' element={<PrivateRoutes/>}>
         <Route element={<DashboardLayout/>}>
         <Route path='admin' element={<AdminDashboard />} />
+        <Route path='users' element={<Users />} />
+        <Route path='roles' element={<Roles />} />
+        <Route path='products' element={<Products />} />
         </Route>
         </Route>
       </Routes>

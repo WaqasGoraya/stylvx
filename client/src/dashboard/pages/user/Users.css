@@ -1,0 +1,58 @@
+.user-management {
+    border: 1px solid rgba(151, 151, 151, 1);
+    border-radius: 15px;
+  }
+  
+  .green-btn {
+    background: #00A68D;
+    border: none;
+    border-radius: 100px;
+    font-size: 14px;
+    width: 86px;
+    height: 26px;
+    color: white;
+  }
+  
+  .golden-btn {
+    background: #FCBE2D;
+    border: none;
+    border-radius: 100px;
+    font-size: 14px;
+    width: 86px;
+    height: 26px;
+    color: white;
+  }
+  
+  .dark-red {
+    background: #FD5454;
+    border: none;
+    border-radius: 100px;
+    font-size: 14px;
+    width: 86px;
+    height: 26px;
+    color: white;
+  }
+  
+  .table>:not(caption)>*>* {
+    padding: 12px !important;
+  }
+  
+  .user-management .table {
+    white-space: nowrap;
+  }
+  
+  .user-management .table td,
+  th {
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  
+  .user-management .table th {
+    background: rgba(241, 244, 249, 1);
+  }
+  
+  .dashboard-sec span {
+    top: 12px;
+    left: 201px;
+    background-color: white;
+  }

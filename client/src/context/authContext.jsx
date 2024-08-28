@@ -6,19 +6,23 @@ const AuthProvider = ({children}) => {
     const [auth,setAuth] = useState({
         user:'',
     });
+    const [loading, setLoading] = useState(true); // Add a loading state
     useEffect(()=>{
         const data = localStorage.getItem('auth');
+        
         if(data){
         const ParseData = JSON.parse(data);
         setAuth({
             ...auth,
             user:ParseData.user
         })
+        setLoading(false); // Set loading to false once data is retrieved
     }
+    
     // eslint-disable-next-line
     },[]);
     return (
-        <AuthContext.Provider value={[auth,setAuth]}>
+        <AuthContext.Provider value={[ auth, setAuth, loading ]}>
             {children}
         </AuthContext.Provider>
     );

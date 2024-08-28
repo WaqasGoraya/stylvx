@@ -36,7 +36,7 @@ const LoginModal = ({ handleClose }) => {
         onSubmit: async(values) => {
             try {
                 setLoading(true)
-                const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/login`,values, {withCredentials:true});
+                const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/login`,values, {withCredentials:true});
                 if(response.data && response.data.status === 'Success'){
                  
                     setAuth({

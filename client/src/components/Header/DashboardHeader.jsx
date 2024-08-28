@@ -1,6 +1,14 @@
+import { useState } from 'react';
 import './DashboardHeader.css'
+import useLogout from '../../hooks/useLogout';
+import { Link } from 'react-router-dom';
 
 const DashboardHeader = () => {
+  const [isActive, setIsActive] = useState(false);
+  const logout = useLogout();
+  const toggleMenu = () => {
+      setIsActive(!isActive);
+  };
   return (
     <>
       <header className="header-main">
@@ -11,7 +19,7 @@ const DashboardHeader = () => {
                 <div className="flag-sec">
                   <img
                     className="img-fluid me-3"
-                    src="images/us-flage.png"
+                    src="/images/us-flage.png"
                     width="25px"
                     height="25px"
                     alt="usFlag"
@@ -23,18 +31,18 @@ const DashboardHeader = () => {
                 <div className="profiles-sec">
                   <nav>
                     <div className="menu-toggle"></div>
-                    <div className="profile">
+                    <div className="profile" onClick={toggleMenu}>
                       <div className="user d-flex align-items-center gap-2">
                         <div className="img-box">
                           <img
                             className="img-fluid"
-                            src="./images/profile-img.png"
+                            src="/images/profile-img.png"
                             alt="user-images"
                           />
                         </div>
                         <span className="prof-name">Marry</span>
                       </div>
-                      <div className="menu">
+                      <div className={`menu ${isActive ? 'active' : ''}`}>
                         <ul className="ps-0">
                           <li>
                             <a href="#">
@@ -42,7 +50,7 @@ const DashboardHeader = () => {
                             </a>
                           </li>
                           <li>
-                            <a href="#">
+                            <Link href="#" onClick={logout}>
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="20"
@@ -52,7 +60,7 @@ const DashboardHeader = () => {
                                 <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z" />
                               </svg>
                               &nbsp;Sign Out
-                            </a>
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -80,7 +88,7 @@ const DashboardHeader = () => {
                   className="offcanvas offcanvas-start"
                   data-bs-scroll="true"
                   data-bs-backdrop="false"
-                  tabindex="-1"
+                  tabIndex="-1"
                   id="offcanvasScrolling"
                   aria-labelledby="offcanvasScrollingLabel"
                 >
@@ -101,35 +109,35 @@ const DashboardHeader = () => {
                   <div className="offcanvas-body pt-0">
                     <div className="main-sidebar">
                       <ul className="list-unstyled mb-0">
-                        <a
+                        <Link
                           className="text-decoration-none fw-bold"
-                          href="dashboard.html"
+                          to='/dashboard/admin'
                         >
-                          <li className="active">Dashboard</li>
-                        </a>
-                        <a
+                          <li>Dashboard</li>
+                        </Link>
+                        <Link
                           className="text-decoration-none fw-bold"
-                          href="user-management.html"
+                          to='/dashboard/users'
                         >
                           <li>Users management</li>
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                           className="text-decoration-none fw-bold"
-                          href="role-permissions.html"
+                          to='/dashboard/roles'
                         >
                           <li>Roles and Permissions</li>
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                           className="text-decoration-none fw-bold"
-                          href="product.html"
+                          to='/dashboard/products'
                         >
                           <li>product management</li>
-                        </a>
+                        </Link>
                       </ul>
                     </div>
                   </div>
                 </div>
-                <a href="./index.html">
+                <Link to='/dashboard/admin'>
                   <svg
                     width="230"
                     height="40"
@@ -142,7 +150,7 @@ const DashboardHeader = () => {
                       fill="black"
                     />
                   </svg>
-                </a>
+                </Link>
               </div>
               <div className="d-flex align-items-center gap-4">
                 <a href="#" className="position-relative">
@@ -193,7 +201,7 @@ const DashboardHeader = () => {
               <div className="prof-image-sec">
                 <img
                   className="img-fluid"
-                  src="./images/profile-img.png"
+                  src="/images/profile-img.png"
                   alt=""
                 />
               </div>
@@ -203,7 +211,7 @@ const DashboardHeader = () => {
               </div>
             </div>
             <div>
-              <button className="dashboard-black-btn mt-3 mt-md-0">
+              <button className="dashboard-black-btn mt-3 mt-md-0" onClick={logout}>
                 Logout
               </button>
             </div>
