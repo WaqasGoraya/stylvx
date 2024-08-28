@@ -29,15 +29,6 @@
   
   /* topbar end */
   
-  
-  nav {
-  
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
   .menu-toggle::before {
     content: '';
     position: absolute;
@@ -190,6 +181,52 @@
   }
   
   /* prof-home-screen end */
+
+  /* dashboard-section start */
+.main-sidebar {
+  background: rgba(245, 245, 245, 1);
+  padding: 30px 10px;
+  height: 100%;
+}
+
+.main-sidebar li {
+  background: rgba(255, 255, 255, 1);
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+}
+
+.main-sidebar a {
+  color: #000;
+}
+
+.main-sidebar a:hover li {
+  background: #000;
+  color: white;
+  transition: 0.5s;
+}
+
+.main-sidebar .active li {
+  background: #000 !important;
+  color: white;
+}
+
+.dashboard-sec .right-content .latest-visitors {
+  box-shadow: 7.57px 7.57px 68.17px 0px rgba(0, 0, 0, 0.05);
+  border: 3px solid rgba(8, 8, 8, 1);
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.dashboard-sec .right-content .latest-visitors p {
+  font-size: 14px;
+}
+
+.dashboard-sec .right-content .latest-visitors .persent {
+  color: #000;
+}
+
+/* dashboard-section end */
   
 @media (max-width:767px) {
     .prof-home-screen .prof-image-sec {

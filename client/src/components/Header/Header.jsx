@@ -3,13 +3,13 @@ import { Link } from "react-router-dom"
 import { createPortal } from 'react-dom';
 import LoginModal from "../../pages/LoginModal"
 import { useAuth } from "../../context/authContext";
-import axios from "axios";
-import toast from "react-hot-toast";
+import useLogout from "../../hooks/useLogout";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [auth,setAuth] = useAuth();
+  const logout = useLogout();
 
   const handleScroll = () => {
     if (window.scrollY > 50) {
@@ -29,24 +29,6 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const handleLogout = async() => {
-    try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/logout`,{},{withCredentials:true});
-      console.log(response)
-      if(response.data && response.data.status === 'success'){
-        setAuth({
-          ...auth,
-          user:null
-        });
-        localStorage.removeItem('auth');
-        toast.success('Logout Success');
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error('Something went wrong!');
-    }
-      
-  }
   return (
     <>
 <header className="header-main">
@@ -89,7 +71,7 @@ const Header = () => {
             </div>
           </>) : (<>
             <div className="btn-sec">
-              <button  className="sign-in-btn" onClick={handleLogout}>
+              <button  className="sign-in-btn" onClick={logout}>
                 <svg className="sign-in-svg" width="20" height="20" viewBox="0 0 27 23" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <path

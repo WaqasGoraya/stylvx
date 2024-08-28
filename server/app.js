@@ -36,7 +36,7 @@ app.use(passport.initialize());
 CONNECT_DB(process.env.DB_URL);
 
 // routes
-app.use('/api/user/',routes)
+app.use('/api',routes)
 
 app.get('/auth/google', passport.authenticate('google', { session: false, scope: ['profile','email'] }));
   

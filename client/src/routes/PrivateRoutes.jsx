@@ -1,44 +1,15 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import axios from "axios";
 
-const PrivateRoutes = () => {
-    const [auth,setAuth] = useAuth();
-    const [ok, setOk] = useState(false);
-    const [loading, setLoading] = useState(true); // Add a loading state
-    // useEffect(() => {
-    //     const authCheck = async () => {
-    //         try {
-    //             const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/profile`, { withCredentials: true });
-    //             if (res.data.status === 'success') {
-    //                 setOk(true);
-    //             }
-    //         } catch (error) {
-    //             console.error("Auth check failed:", error);
-    //             setOk(false);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     if (auth) {
-    //         authCheck();
-    //     } else {
-    //         setLoading(false);
-    //     }
-    // }, []);
-
-    // Show a loading indicator while checking auth
-    // if (loading) {
-    //     return <div>Loading...</div>;
-    // }
-    if(auth.user){
-        setOk(true)
+// PrivateRoute Component
+const PrivateRoute = () => {
+    const [ auth, loading ] = useAuth(); // Destructure loading from the context
+    if (!auth.user && loading) {
+        return <div>Loading...</div>; // You can customize this to a loader component
     }
-    console.log(auth)
-    // If auth is ok, render the protected routes, otherwise redirect
-    return ok ? <Outlet /> : <Navigate to="/" />;
+    console.log(auth.user.role[0]['name'])
+  return auth.user ? <Outlet /> : <Navigate to="/" />;
 };
 
-export default PrivateRoutes;
+export default PrivateRoute;
