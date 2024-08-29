@@ -24,6 +24,7 @@ import AdminDashboard from './dashboard/AdminDashboard';
 import Users from './dashboard/pages/user/Users';
 import Products from './dashboard/pages/product/Products';
 import Roles from './dashboard/pages/roles/Roles';
+import EditUser from './dashboard/pages/user/EditUser';
 function App() {
   return (
     <>
@@ -52,6 +53,7 @@ function App() {
         <Route element={<DashboardLayout/>}>
         <Route path='admin' element={<AdminDashboard />} />
         <Route path='users' element={<Users />} />
+        <Route path='users/edit/:id' element={<EditUser />} />
         <Route path='roles' element={<Roles />} />
         <Route path='products' element={<Products />} />
         </Route>

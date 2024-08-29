@@ -9,7 +9,6 @@ const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true); // Add a loading state
     useEffect(()=>{
         const data = localStorage.getItem('auth');
-        
         if(data){
         const ParseData = JSON.parse(data);
         setAuth({

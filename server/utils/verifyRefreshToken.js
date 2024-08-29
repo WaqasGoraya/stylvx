@@ -4,7 +4,7 @@ const verifyRefreshToken = async(refreshtoken) => {
     try {
         // Find refresh token in db
         const userRefreshToken = await refreshTokenModel.findOne({token: refreshtoken});
-        
+   
         // If token not valid
         if(!userRefreshToken){
             throw {error: true, message: 'Invalid Refresh Token'}

@@ -17,5 +17,12 @@ router.get('/profile', setAccessTokenRefresh ,passport.authenticate('jwt', { ses
 router.post('/logout', setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }), authController.userLogout);
 
 // User routes
+// router.get('/users', userController.getUsers);
+// router.get('/user/:id', userController.userDetail);
+// router.put('/user/:id', userController.updateUser);
+// router.get('/roles', userController.getRoles);
 router.get('/users',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.getUsers);
+router.get('/user/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.userDetail);
+router.put('/user/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.updateUser);
+router.get('/roles',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.getRoles);
 export default router;
