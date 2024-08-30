@@ -17,7 +17,7 @@ class permissionController {
             })
         }
     }
-    static addPemission = async(req,res)=>{
+    static addPermission = async(req,res)=>{
         try {
             const {name} = req.body
             if(!name){
@@ -74,7 +74,7 @@ class permissionController {
         try {
             const {id} = req.params
             const {name} = req.body
-           const permission = await permissionsModel.findByIdAndUpdate(id,{name:name});
+           const permission = await permissionsModel.findByIdAndUpdate(id,{name:name},{new:true});
             return res.status(200).json({
                 status:'success',
                 message:"Updated Success!",
