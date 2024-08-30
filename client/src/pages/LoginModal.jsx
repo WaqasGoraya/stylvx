@@ -7,7 +7,6 @@ import axios from 'axios';
 import { useAuth } from "../context/authContext"
 import { createPortal } from 'react-dom';
 import ForgotPasswordModal from './ForgotPasswordModal';
-import rolesModel from '../../../server/models/roles';
 
 const initialValues = {
     email:"",
