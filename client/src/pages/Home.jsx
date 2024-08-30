@@ -1,9 +1,5 @@
-import axios from "axios";
+
 const Home = () => {
-  const fn = async() =>{
-         const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/profile`,{withCredentials:true});
-          console.log(res)
-  }
   return (
     <>
     <div className="video-background">
@@ -243,7 +239,6 @@ const Home = () => {
       </div>
     </div>
   </section>
-  <button onClick={fn}>Profile</button>
     </>
   )
 }

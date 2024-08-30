@@ -4319,3 +4319,14 @@ body {
   height: 100%;
   object-fit: cover;
 }
+/* Spinner css */
+.spinner-main{
+  position: fixed;
+  top: 52%;
+  left: 50%;
+}
+.spinner-border{
+  width: 50px;
+  height: 50px;
+}
+/* Spinner css */

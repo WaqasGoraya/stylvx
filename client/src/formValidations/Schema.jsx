@@ -21,3 +21,11 @@ export const resetPasswordSchema = Yup.object({
 export const resetpasswordLinkSchema = Yup.object({
     email: Yup.string().required('Email is required').email('Email is Invalid')
 });
+
+export const EditUserSchema = Yup.object({
+    firstname: Yup.string().required('First name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
+    lastname: Yup.string().required('Last name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
+    email: Yup.string().required('Email is required').email('Invalid Email Address!'),
+    role: Yup.string().required('Role is required')
+
+})
