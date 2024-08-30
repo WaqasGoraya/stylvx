@@ -88,6 +88,30 @@ class userController {
             })
         }
     }
+    static deleteUser = async(req,res)=>{
+        try {
+            const {id} = req.params
+             const isDeleted = await userModel.findByIdAndDelete(id);
+             if(isDeleted){
+                return res.status(200).json({
+                    status:"success",
+                    message: "User Deleted Success"
+                });
+             }else{
+                res.json({
+                    status:"failed",
+                    message:"User Not Found!"
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                status: "failed",
+                message: "Something went wrong!",
+                error: error
+            })
+        }
+    }
 }
 
 export default userController
