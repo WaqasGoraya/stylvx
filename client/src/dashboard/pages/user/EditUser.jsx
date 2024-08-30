@@ -17,7 +17,7 @@ const EditUser = () => {
     const getUser = async () => {
       try {
         const userRes = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/user/${id}`,
+          `${import.meta.env.VITE_BASE_URL}/user/detail/${id}`,
           { withCredentials: true }
         );
         const rolesRes = await axios.get(
@@ -57,7 +57,7 @@ const EditUser = () => {
       try {
         setLoading(true);
         const { data } = await axios.put(
-          `${import.meta.env.VITE_BASE_URL}/user/${id}`,
+          `${import.meta.env.VITE_BASE_URL}/user/update/${id}`,
           values,
           { withCredentials: true }
         );

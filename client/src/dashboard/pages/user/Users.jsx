@@ -4,14 +4,29 @@ import axios from "axios";
 import "./Users.css";
 import Spiner from "../../../components/Loader/Spiner";
 import toast from "react-hot-toast";
+import confirmDelete from "../../../components/alert/ConfirmDelete";
 
 const Users = () => {
   const navigate = useNavigate();
-  const handleEdit = (id) => {
-    navigate(`/dashboard/users/edit/${id}`)
+  const handleEdit = (userId) => {
+    navigate(`/dashboard/users/edit/${userId}`)
   }
-  const handleDelete =  (id) => {
-
+  const handleDelete =  async(userId) => {
+    const isConfirmed = await confirmDelete();
+    if(isConfirmed){
+      try {
+        const response = await axios.delete(`${import.meta.env.VITE_BASE_URL}/user/delete/${userId}`,{withCredentials:true})
+        if (response.data.status === "success") {
+          // Update the state to remove the deleted user from the list
+          setUsers(users.filter(user => user._id !== userId));
+          toast.success("User deleted successfully!");
+        } else {
+          toast.error("Failed to delete user.");
+        }
+      } catch (error) {
+        toast.error("An error occurred while deleting the user.");
+      }
+    }
   }
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState();
