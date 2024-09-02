@@ -1,0 +1,58 @@
+.MultiSelectDropDown-holder {
+	width: 300px;
+	height: 40px;
+	margin-top: 5px;
+	cursor: pointer;
+	display: inline-block;
+}
+.MultiSelectDropDown-option-holder {
+	display: flex;
+	align-items: center;
+}
+.MultiSelectDropDown-checkbox-container {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin-right: 15px;
+}
+.MultiSelectDropDown-checkbox {
+	transition: background-color 0.1s ease-in-out;
+	border-radius: 2px;
+}
+.MultiSelectDropDown-checkbox.--selected {
+	width: 20px;
+	height: 20px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-image: url(./tick.svg);
+	background-color: #2684ff;
+}
+.MultiSelectDropDown-checkbox.--unselected {
+	width: 18px;
+	height: 18px;
+	border: 1px solid #808080;
+}
+.MultiSelectDropDown-checkbox-input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	top: 0;
+}
+.MultiSelectDropDown-option-text {
+	font-size: 15px;
+}
+.MultiSelectDropDown-search-img {
+	position: absolute;
+	left: 10px;
+}
+.MultiSelectDropDown-selected-value {
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	/* autoprefixer: off */
+	-webkit-box-orient: vertical;
+	word-break: break-all;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	white-space: normal;
+}

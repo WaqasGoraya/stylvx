@@ -4330,3 +4330,21 @@ body {
   height: 50px;
 }
 /* Spinner css */
+.role-permission-section  .modal,
+#product-section .modal {
+  --bs-modal-zindex: 1055;
+  --bs-modal-width: 750px !important;
+ 
+}  
+
+/* role-css-end */
+
+
+/* permission-css-start */
+@media (min-width: 992px) {
+  .role-permission-section .modal-dialog,
+  #product-section .modal-dialog{
+      margin-left: 29% !important;
+      margin-top: 5% !important;
+  }
+}

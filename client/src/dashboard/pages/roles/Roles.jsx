@@ -150,8 +150,8 @@ const Roles = () => {
           </div>
           </span>
         </div>
-        {isRoleModalOpen && createPortal(<RoleModal close={closeRoleModal} />,document.body)}
-        {isPermModalOpen && createPortal(<PermissionModal close={closePermModal} />,document.body)}
+        {isRoleModalOpen && createPortal(<RoleModal close={closeRoleModal} />, document.body)}
+        {isPermModalOpen && createPortal(<PermissionModal close={closePermModal} />, document.body)}
     </>
   )
 }
