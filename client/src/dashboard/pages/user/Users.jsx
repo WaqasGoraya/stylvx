@@ -52,9 +52,16 @@ const Users = () => {
     <>
       {loading ? <Spiner /> : ""}
       <div className="col-lg-9">
+      <div className="d-flex flex-row flex-wrap align-items-center justify-content-center justify-content-sm-between gy-4 pt-5">
+            <h5 className="fw-bold text-uppercase">User Management</h5>
+            <div className="position-relative">
+            <input className="border-0 rounded-0 border-bottom border border-dark form-control"  type="search" placeholder="Search Products" />
+            <span className="position-absolute fa fa-search "></span>
+          </div>
+          </div>
         <div className="right-content mt-3 mb-5">
           <div className="user-management">
-            <h5 className="p-3">Users Management </h5>
+         <Link to="/dashboard/users/add"> <button className="px-3 py-1 border-0  rounded-2 bg-black text-white m-3 fs-6">Add New User</button></Link>
             <div className="table-responsive">
               <table className="table">
                 <thead>

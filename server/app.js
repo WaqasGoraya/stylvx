@@ -9,6 +9,7 @@ import routes from "./routes/web.js";
 import './config/jwt-strategy.js';
 import './config/google-auth-strategy.js';
 import TokenCookies from "./utils/setTokenCookies.js";
+import path from 'path'
 const app = express();
 const port = process.env.PORT || 8000;
 
@@ -35,6 +36,9 @@ app.use(passport.initialize());
 // DB Connection
 CONNECT_DB(process.env.DB_URL);
 
+// Serve static files from the 'public' directory
+app.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
+
 // routes
 app.use('/api',routes)
 
@@ -54,7 +58,7 @@ app.get('/auth/google', passport.authenticate('google', { session: false, scope:
     //   res.redirect('/');
     });
 
-
+console.log(`Server restarted`)
 
 app.listen(port,()=>{
     console.log(`http://localhost:${port}`);
