@@ -41,13 +41,6 @@ export const AddProductSchema = Yup.object({
     price: Yup.number().required('price is required'),
     stock: Yup.number().required('stock is required'),
     category: Yup.string().required('Category is required'),
-    image: Yup.string().required('image is required')
-})
-export const EditProductSchema = Yup.object({
-    name: Yup.string().required('name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
-    price: Yup.number().required('price is required'),
-    stock: Yup.number().required('stock is required'),
-    category: Yup.string().required('Category is required'),
     image: Yup.mixed()
     .required("Image is required")
     .test(
@@ -61,3 +54,26 @@ export const EditProductSchema = Yup.object({
       value => value && ["image/jpg", "image/jpeg", "image/png"].includes(value.type)
     )
 })
+export const EditProductSchema = Yup.object({
+    name: Yup.string().required('name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
+    price: Yup.number().required('price is required'),
+    stock: Yup.number().required('stock is required'),
+    category: Yup.string().required('Category is required'),
+   
+})
+
+export const PermissionSchema = Yup.object({
+    name: Yup.string().required('Permission Name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
+})
+
+export const RolesSchema = Yup.object({
+    roleName: Yup.string()
+      .required('Name is required')
+      .max(20, 'Cannot exceed 20 characters')
+      .min(3, 'Too short!'),
+    
+    permissions: Yup.array()
+      .of(Yup.string().required('Permission are required')) // Ensures each item in the array is a string
+      .min(1, 'At least one permission is required') // Ensures at least one permission is selected
+      .required('Permissions are required'), // Ensures the permissions field itself is not empty
+  });

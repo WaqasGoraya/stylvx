@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Spiner from "../../../components/Loader/Spiner";
 import { EditProductSchema } from "../../../formValidations/Schema";
 
-const EditProduct = ({ close, id }) => {
-  //   const { id } = useParams();
+const EditProduct = ({ close, id, onUpdate }) => {
   const [initialValues, setInitialValues] = useState(null);
   const [categories, setcategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,36 +17,38 @@ const EditProduct = ({ close, id }) => {
     }
   };
   useEffect(() => {
-    const getProduct = async () => {
+    const getProductAndCategories = async () => {
+      setLoading(true);
       try {
-        const productRes = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/products/detail/${id}`,
-          { withCredentials: true }
-        );
-        const categoryRes = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/category`,
-          { withCredentials: true }
-        );
-
+        const [productRes, categoryRes] = await Promise.all([
+          axios.get(`${import.meta.env.VITE_BASE_URL}/products/detail/${id}`, {
+            withCredentials: true,
+          }),
+          axios.get(`${import.meta.env.VITE_BASE_URL}/category`, {
+            withCredentials: true,
+          }),
+        ]);
         if (productRes.data && categoryRes.data.status === "success") {
           const productData = productRes.data;
           setInitialValues({
             name: productData.name || "",
             price: productData.price || "",
             stock: productData.stock || "",
-            role: productData.category[0] || "",
+            category: productData.category._id || "", // Corrected key from 'role' to 'category'
             image: productData.image,
           });
           setcategories(categoryRes.data.category);
-          setLoading(false);
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching product or categories:", error);
+      } finally {
         setLoading(false);
       }
     };
-    getProduct();
+  
+    getProductAndCategories();
   }, [id]);
+  
 
   const formik = useFormik({
     initialValues: initialValues || {
@@ -78,8 +79,8 @@ const EditProduct = ({ close, id }) => {
         );
         if (data) {
           toast.success("Product Updated Successfully!");
+          onUpdate();
           close();
-          navigate("/dashboard/products");
         } else {
           toast.error("Unable to update product");
         }
@@ -133,12 +134,12 @@ const EditProduct = ({ close, id }) => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                           />
-                        </div>
-                        {formik.errors.name && (
+                               {formik.errors.name && (
                           <div className="text-sm text-danger">
                             {formik.errors.name}
                           </div>
                         )}
+                        </div>
                         <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start">
                           <label htmlFor="">Category</label>
                           <select
@@ -225,18 +226,6 @@ const EditProduct = ({ close, id }) => {
                       </div>
                     </form>
                   </div>
-                </div>
-
-                {/* <!-- Modal footer --> */}
-                <div className="modal-footer bg-light">
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    data-bs-dismiss="modal"
-                    onClick={close}
-                  >
-                    Close
-                  </button>
                 </div>
               </div>
             </div>

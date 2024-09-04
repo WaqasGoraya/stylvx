@@ -680,7 +680,7 @@ body {
 }
 
 .modal-header .btn-close {
-  background: url('./images/cross.png') !important;
+  background: url('/images/cross.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

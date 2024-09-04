@@ -32,7 +32,7 @@ const setAccessTokenRefresh = async (req,res,next) => {
     } catch (error) {
         console.error('Error adding access token to header:', error.message);
         // Handle the error, such as returning an error response or redirecting to the login page
-        res.status(401).json({ error: 'Unauthorized', message: 'Access token is missing or invalid' });
+        // res.status(401).json({ error: 'Unauthorized', message: 'Access token is missing or invalid' });
     }
 }
 

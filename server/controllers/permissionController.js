@@ -17,40 +17,46 @@ class permissionController {
             })
         }
     }
-    static addPermission = async(req,res)=>{
+    static addPermission = async (req, res) => {
         try {
-            const {name} = req.body
-            if(!name){
-                res.status(422).json({
-                    status:"failed",
-                    message:"name is required"
-                })
-            }
-            const isExist = await permissionsModel.findOne({name:name})
-            if(isExist){
-                res.status(403).json({
-                    status:"failed",
-                    message:"Already exist"
+            const { name } = req.body;
+    
+            // Check if the name is provided
+            if (!name) {
+                return res.status(422).json({
+                    status: "failed",
+                    message: "Name is required",
                 });
             }
-            const permission =  await new permissionsModel({name}).save();
-            if(permission){
-             return res.status(201).json({
+    
+            // Check if the permission already exists
+            const isExist = await permissionsModel.findOne({ name });
+            if (isExist) {
+                return res.status(403).json({
+                    status: "failed",
+                    message: "Permission already exists",
+                });
+            }
+    
+            // Create a new permission
+            const permission = new permissionsModel({ name });
+            await permission.save();
+    
+            return res.status(201).json({
                 status: "success",
                 message: "Permission Created!",
-                permission
-                
+                permission,
             });
-        }
         } catch (error) {
-            console.log(error)
+            console.error("Error creating permission:", error);
             return res.status(500).json({
                 status: "failed",
                 message: "Something went wrong!",
-                error: error
-            })
+                error: error.message, // Send only the error message to avoid exposing stack traces
+            });
         }
     }
+    
     static permissionDetail = async(req,res)=>{
         try {
             const {id} = req.params
