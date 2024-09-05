@@ -72,8 +72,5 @@ export const RolesSchema = Yup.object({
       .max(20, 'Cannot exceed 20 characters')
       .min(3, 'Too short!'),
     
-    permissions: Yup.array()
-      .of(Yup.string().required('Permission are required')) // Ensures each item in the array is a string
-      .min(1, 'At least one permission is required') // Ensures at least one permission is selected
-      .required('Permissions are required'), // Ensures the permissions field itself is not empty
+    permissions: Yup.array().min(1, 'At least one permission is required')
   });

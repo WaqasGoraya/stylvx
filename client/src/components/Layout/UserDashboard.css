@@ -1,0 +1,39 @@
+/* edit-profile-css-start */
+#edit-profile-section .profileimgage-outer {
+    width: 120px;
+    height: 50%;
+    margin: auto;
+  }
+  #edit-profile-section .profileimgage-outer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15%;
+  }
+  #edit-profile-section .upload-image-outer {
+    top: 18px;
+    left: 68%;
+    width: 25%;
+    height: auto !important;
+  }
+  #edit-profile-section .upload-image-outer img{
+    width: 100%;
+    height: 100%;
+  }
+  .file-input {
+    display: none; 
+  }
+  
+  .file-label {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .file-label img {
+    width: 100px; 
+    height: auto; 
+  }
+  
+  
+  
+  /* edit-profile-css-end */

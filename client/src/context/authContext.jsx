@@ -17,7 +17,7 @@ const AuthProvider = ({children}) => {
         })
         setLoading(false); // Set loading to false once data is retrieved
     }
-    
+    setLoading(false)
     // eslint-disable-next-line
     },[]);
     return (

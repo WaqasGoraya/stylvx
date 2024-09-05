@@ -47,7 +47,6 @@ const LoginModal = ({ handleClose }) => {
           localStorage.setItem("auth", JSON.stringify(response.data));
           const role = response.data.user.role;
           const roleName = role.map((role) => role.name);
-          console.log(roleName[0]);
           if (roleName[0] == "admin") {
             navigate("/dashboard/admin");
           } else {
