@@ -68,13 +68,16 @@ function App() {
             <Route path="products/add" element={<AddProduct />} />
             <Route path="products/edit/:id" element={<EditProduct />} />
           </Route>
-        </Route>
-        {/* User profile */}
-        <Route path="/profile" element={<PrivateRoutes />}>
           <Route element={<UserDashboardLayout />}>
             <Route path="user" element={<UserDashboard />} />
           </Route>
         </Route>
+        {/* User profile */}
+        {/* <Route path="/profile" element={<PrivateRoutes />}>
+          <Route element={<UserDashboardLayout />}>
+            <Route path="user" element={<UserDashboard />} />
+          </Route>
+        </Route> */}
       </Routes>
     </>
   );
