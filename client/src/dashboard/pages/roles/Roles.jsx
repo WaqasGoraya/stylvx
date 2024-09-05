@@ -4,13 +4,15 @@ import toast from "react-hot-toast";
 import Spiner from "../../../components/Loader/Spiner";
 import "./Roles.css";
 import { createPortal } from "react-dom";
-import RoleModal from "./RoleModal";
+import RolesModal from "./RoleModal";
 import PermissionModal from "./PermissionModal";
 import confirmDelete from "../../../components/alert/ConfirmDelete";
+import { setNestedObjectValues } from "formik";
 const Roles = () => {
   const [roles, setRoles] = useState(null);
   const [permissions, setPermissions] = useState([]);
   const [selectedPermission, setSelectedPermission] = useState(null); // Current permission being edited
+  const [selectedRoles, setSelectedRoles] = useState(null); // Current permission being edited
   const [loading, setLoading] = useState(false);
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
   const [isPermModalOpen, setIsPermModalOpen] = useState(false);
@@ -20,14 +22,26 @@ const Roles = () => {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-  const handleEditClick = (permission) => {
-    setSelectedPermission(permission); // Set the selected permission for editing
-    setIsPermModalOpen(true);
+  const handleEditClick = (data, type) => {
+    if (type === "permission") {
+      setSelectedPermission(data); // Set the selected permission for editing
+      setIsPermModalOpen(true);
+    }
+    if (type === "role") {
+      setSelectedRoles(data); // Set the selected permission for editing
+      setIsRoleModalOpen(true);
+    }
   };
 
   // Role Modal
-  const openRoleModal = () => setIsRoleModalOpen(true);
-  const closeRoleModal = () => setIsRoleModalOpen(false);
+  const openRoleModal = () => {
+    setSelectedRoles(null);
+    setIsRoleModalOpen(true);
+  };
+  const closeRoleModal = () => {
+     setSelectedRoles(null);
+    setIsRoleModalOpen(false);
+  };
 
   // Permission Modal
   const openPermModal = () => {
@@ -197,7 +211,7 @@ const Roles = () => {
                               </td>
                               <td>
                                 <span
-                                  onClick={() => handleEdit(role._id, "role")}
+                                  onClick={() => handleEditClick(role, "role")}
                                   style={{ cursor: "pointer" }}
                                 >
                                   <img
@@ -264,7 +278,9 @@ const Roles = () => {
                               <td>{permission.name}</td>
                               <td>
                                 <span
-                                  onClick={() => handleEditClick(permission)}
+                                  onClick={() =>
+                                    handleEditClick(permission, "permission")
+                                  }
                                   style={{ cursor: "pointer" }}
                                 >
                                   <img
@@ -304,7 +320,11 @@ const Roles = () => {
       </div>
       {isRoleModalOpen &&
         createPortal(
-          <RoleModal close={closeRoleModal} onUpdate={handleUpdate} />,
+          <RolesModal
+            close={closeRoleModal}
+            onUpdate={handleUpdate}
+            role={selectedRoles}
+          />,
           document.body
         )}
       {isPermModalOpen &&

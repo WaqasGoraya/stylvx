@@ -10,6 +10,14 @@ import ProductController from "../controllers/productController.js";
 import upload from "../config/multerConfig.js";
 const router = express.Router();
 
+// auth check
+
+router.get('/auth',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),(req,res)=>{
+        if(!req.cookies.is_auth){
+            return res.status(401).json({status:"failed",message:"unauthorized"})
+        }
+        return res.status(200).json({status:"success",message:"authorized"})
+})
 
 // Public Routes
 router.post('/register',authController.userRegistration);

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-import MultiSelectDropDown from "./Selector";
 import toast from "react-hot-toast";
 import { RolesSchema } from "../../../formValidations/Schema";
+import MultiSelect from "./MultiSelect";
 
-const RoleModal = ({ close }) => {
+const RoleModal = ({ close, onUpdate, role }) => {
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const isEditMode = !!role; // Check if it's edit mode by checking if the role prop is passed
   const handleOutsideClick = (e) => {
     if (e.target.classList.contains("main-modal")) {
       close();
@@ -45,33 +45,66 @@ const RoleModal = ({ close }) => {
 
   const formik = useFormik({
     initialValues: {
-      roleName: "",
-      permissions: [],
+      roleName: role?.name || "", // If role exists, populate its name for editing
+      permissions: role?.permissions
+        ? role.permissions.map((perm) => ({
+            label: perm.name,
+            value: perm._id,
+          }))
+        : [], // Populate permissions when in edit mode, or default to an empty array
     },
     validationSchema: RolesSchema,
+    enableReinitialize: true, // Enable form reinitialization when role data is passed
     onSubmit: async (values) => {
-      alert('test');
+      const transformedData = {
+        roleName: values.roleName,
+        permissions: values.permissions.map((permission) => permission.value), // Extract only the value
+      };
+
       setLoading(true);
       try {
-        const res = await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/roles/add`,
-          values,
-          { withCredentials: true }
-        );
-        if (res.data.status === "success") {
-          toast.success("Role added successfully!");
-          close(); // Close modal after successful submission
+        if (isEditMode) {
+          // If it's edit mode, update the role
+          const res = await axios.put(
+            `${import.meta.env.VITE_BASE_URL}/roles/update/${role._id}`,
+            transformedData,
+            { withCredentials: true }
+          );
+          if (res.data.status === "success") {
+            toast.success("Role updated successfully!");
+            onUpdate();
+            close();
+          }
+        } else {
+          // Otherwise, create a new role
+          const res = await axios.post(
+            `${import.meta.env.VITE_BASE_URL}/roles/add`,
+            transformedData,
+            { withCredentials: true }
+          );
+          if (res.data.status === "success") {
+            toast.success("Role added successfully!");
+            onUpdate();
+            close();
+          }
         }
       } catch (error) {
-        toast.error("Unable to create role!");
+        toast.error(isEditMode ? `Unable to update role! ${error.response.data.message}` : `Unable to create role! ${error.response.data.message}`);
       } finally {
         setLoading(false);
       }
     },
   });
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+  } = formik;
 
   return (
     <div className="role-permission-section">
@@ -86,7 +119,9 @@ const RoleModal = ({ close }) => {
             <div className="modal-content w-100">
               {/* Modal Header */}
               <div className="modal-header bg-light">
-                <h4 className="modal-title">Add New Role</h4>
+                <h4 className="modal-title">
+                  {isEditMode ? "Edit Role" : "Add New Role"}
+                </h4>
                 <button
                   type="button"
                   className="btn-close"
@@ -104,7 +139,9 @@ const RoleModal = ({ close }) => {
                         <label htmlFor="roleName">Name</label>
                         <input
                           className={`form-control w-100 py-2 rounded-3 px-3 ${
-                            errors.roleName && touched.roleName ? "is-invalid" : ""
+                            errors.roleName && touched.roleName
+                              ? "is-invalid"
+                              : ""
                           }`}
                           type="text"
                           name="roleName"
@@ -117,19 +154,19 @@ const RoleModal = ({ close }) => {
                         )}
                       </div>
                       <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start">
-                        <label htmlFor="permissions">Permission</label>
-                        <MultiSelectDropDown
-                          options={permissions}
+                        <label htmlFor="permissions">Permissions</label>
+                        <MultiSelect
                           name="permissions"
-                          onChange={(selectedOptions) =>
-                            setFieldValue(
-                              "permissions",
-                              selectedOptions.map((option) => option.value)
-                            )
-                          }
+                          value={values.permissions}
+                          options={permissions}
+                          onChange={(permissions) => {
+                            setFieldValue("permissions", permissions);
+                          }}
                         />
                         {errors.permissions && touched.permissions && (
-                          <div className="text-danger">{errors.permissions}</div>
+                          <div className="text-danger">
+                            {errors.permissions}
+                          </div>
                         )}
                       </div>
                     </div>
@@ -139,7 +176,7 @@ const RoleModal = ({ close }) => {
                         className="bg-black border-0 px-5 py-2 text-white"
                         disabled={loading}
                       >
-                        Submit
+                        {isEditMode ? "Update Role" : "Add Role"}
                       </button>
                     </div>
                   </form>

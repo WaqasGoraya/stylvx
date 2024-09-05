@@ -26,10 +26,14 @@ class rolesController {
     }
   };
   static addRole = async (req, res) => {
-    console.log(req.body)
+   
     try {
       console.log(req.body)
       const { roleName, permissions } = req.body;
+      const isExist = await rolesModel.findOne({name:roleName});
+      if(isExist){
+        return res.status().json({status:"failed",message:"Role Already Exist"});
+      }
       const newRole = new rolesModel({
         name: roleName,
         permissions: permissions, // Array of permissions
