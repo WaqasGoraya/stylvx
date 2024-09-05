@@ -1,5 +1,8 @@
 import rolesModel from "../models/roles.js";
-import userModel from "../models/users.js"
+import userModel from "../models/users.js";
+import generator from "generate-password";
+import bcrypt from "bcrypt";
+import WelcomeEmail from "../config/welcomeEmail.js";
 class userController {
     static getUsers = async(req,res) => {
         try {
@@ -17,6 +20,58 @@ class userController {
                 error: error
             })
         }
+    }
+    static addUser = async(req,res)=>{
+            try {
+                const {firstname, lastname, email, role } = req.body
+                if (!firstname || !lastname || !email || !role) {
+                    return res.status(422).json({
+                        status: "failed",
+                        message: "All fields are required!",
+                    });
+                }
+                    const isEmailExist = await userModel.findOne({email:email});
+                    if(isEmailExist){
+                        return res.status(409).json({
+                            status: "failed",
+                            message: "Email already exist!",
+                        });
+                    }
+                    const password = generator.generate({
+                        length: 10,
+                        numbers: true
+                    });
+                    const HashedPassword = await bcrypt.hash(password,10);
+                    const user = await new userModel({
+                        firstname:firstname,
+                        lastname:lastname,
+                        email:email,
+                        password:HashedPassword,
+                        role:role
+                    }).save();
+                    const name = firstname +' '+ lastname;
+                   await WelcomeEmail(name,email,password);
+                    if(user){
+                        return res.status(201).json({
+                            status: "success",
+                            message: "User Created Successfully!",
+                            user
+                        });
+                    }else{
+                        return res.status(404).json({
+                            status: "failed",
+                            message: "Unable to create user!",
+                        });
+                    }
+              
+            } catch (error) {
+                console.log(error)
+                return res.status(500).json({
+                    status: "failed",
+                    message: "Something went wrong!",
+                    error
+                }); 
+            }
     }
     static userDetail = async(req,res) => {
         try {

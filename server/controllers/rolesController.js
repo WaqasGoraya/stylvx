@@ -26,7 +26,9 @@ class rolesController {
     }
   };
   static addRole = async (req, res) => {
+    console.log(req.body)
     try {
+      console.log(req.body)
       const { roleName, permissions } = req.body;
       const newRole = new rolesModel({
         name: roleName,

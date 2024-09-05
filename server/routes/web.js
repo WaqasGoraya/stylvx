@@ -6,7 +6,10 @@ import setAccessTokenRefresh from "../middleware/setAccessTokenAuto.js";
 import permissionController from "../controllers/permissionController.js";
 import rolesController from "../controllers/rolesController.js";
 import categoryController from "../controllers/CategoryController.js";
+import ProductController from "../controllers/productController.js";
+import upload from "../config/multerConfig.js";
 const router = express.Router();
+
 
 // Public Routes
 router.post('/register',authController.userRegistration);
@@ -20,11 +23,8 @@ router.get('/profile', setAccessTokenRefresh ,passport.authenticate('jwt', { ses
 router.post('/logout', setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }), authController.userLogout);
 
 // User routes
-// router.get('/users', userController.getUsers);
-// router.get('/user/:id', userController.userDetail);
-// router.put('/user/:id', userController.updateUser);
-// router.get('/roles', userController.getRoles);
 router.get('/users',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.getUsers);
+router.post('/users/add',setAccessTokenRefresh,passport.authenticate('jwt',{ session:false }),userController.addUser);
 router.get('/user/detail/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.userDetail);
 router.put('/user/update/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.updateUser);
 router.delete('/user/delete/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.deleteUser);
@@ -36,6 +36,7 @@ router.post('/permission/add',setAccessTokenRefresh ,passport.authenticate('jwt'
 router.get('/permission/detail/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),permissionController.permissionDetail);
 router.put('/permission/update/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),permissionController.updatePermission);
 router.delete('/permission/delete/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),permissionController.deletePermission);
+
 // Roles Routes
 router.get('/roles',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),rolesController.allRoles);
 router.post('/roles/add',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),rolesController.addRole);
@@ -51,5 +52,9 @@ router.put('/category/update/:id',setAccessTokenRefresh ,passport.authenticate('
 router.delete('/category/delete/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),categoryController.deleteCategory);
 
 // Products Route
-
+router.post('/products/add',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }), upload.single('image'), ProductController.createProduct);
+router.get('/products', setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),ProductController.getAllProducts);
+router.get('/products/detail/:id', setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),ProductController.getProductById);
+router.put('/products/update/:id', setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),upload.single('image'),ProductController.updateProduct);
+router.delete('/products/delete/:id', setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),ProductController.deleteProduct);
 export default router;
