@@ -2,9 +2,12 @@ import { useState } from 'react';
 import './DashboardHeader.css'
 import useLogout from '../../hooks/useLogout';
 import { Link } from 'react-router-dom';
+import ShowImage from '../Images/ShowImage';
+import { useAuth } from '../../context/authContext';
 
 const DashboardHeader = () => {
   const [isActive, setIsActive] = useState(false);
+  const [auth,setAuth] = useAuth();
   const logout = useLogout();
   const toggleMenu = () => {
       setIsActive(!isActive);
@@ -34,20 +37,16 @@ const DashboardHeader = () => {
                     <div className="profile" onClick={toggleMenu}>
                       <div className="user d-flex align-items-center gap-2">
                         <div className="img-box">
-                          <img
-                            className="img-fluid"
-                            src="/images/profile-img.png"
-                            alt="user-images"
-                          />
+                        <ShowImage className="img-fluid" alt="user-image" imagePath={auth.user.image || '/uploads/user.png'}/>
                         </div>
-                        <span className="prof-name">Marry</span>
+                        <span className="prof-name">{`${auth.user.firstname}  ${auth.user.lastname}`}</span>
                       </div>
                       <div className={`menu ${isActive ? 'active' : ''}`}>
                         <ul className="ps-0">
                           <li>
-                            <a href="#">
+                            <Link to={auth.user.role[0]['name'] == 'admin' ? '/dashboard/admin' : '/dashboard/profile' }>
                               <i className="fa fa-user"></i>&nbsp;Profile
-                            </a>
+                            </Link>
                           </li>
                           <li>
                             <Link href="#" onClick={logout}>
@@ -137,7 +136,7 @@ const DashboardHeader = () => {
                     </div>
                   </div>
                 </div>
-                <Link to='/dashboard/admin'>
+                <Link to={auth.user.role[0]['name'] == 'admin' ? '/dashboard/admin' : '/dashboard/profile'}>
                   <svg
                     width="230"
                     height="40"
@@ -199,14 +198,10 @@ const DashboardHeader = () => {
           <div className="main-sec d-block d-md-flex text-center text-md-start align-items-center  justify-content-between flex-wrap">
             <div className="align-items-center d-block d-md-flex text-center text-md-start gap-3">
               <div className="prof-image-sec">
-                <img
-                  className="img-fluid"
-                  src="/images/profile-img.png"
-                  alt=""
-                />
+              <ShowImage imagePath={auth.user.image || '/uploads/user.png'}/>
               </div>
               <div className="name-sec">
-                <h2 className="fw-bold text-uppercase mb-0">Hi, Marry</h2>
+                <h2 className="fw-bold text-uppercase mb-0">Hi, {auth.user.firstname +' '+ auth.user.lastname}</h2>
                 <p className="mb-0 grey-color">Welcome to Dashboard</p>
               </div>
             </div>

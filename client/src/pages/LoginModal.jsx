@@ -50,7 +50,7 @@ const LoginModal = ({ handleClose }) => {
           if (roleName[0] == "admin") {
             navigate("/dashboard/admin");
           } else {
-            navigate("/dashboard/user");
+            navigate("/dashboard/profile");
           }
           handleClose();
           toast.success(response.data.message);
