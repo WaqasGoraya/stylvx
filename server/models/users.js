@@ -5,6 +5,7 @@ const userSchema = mongoose.Schema({
     lastname:{type: String},
     email: {type: String, required: true, unique: true, trim: true},
     password: {type: String, required: true, trim: true},
+    image: {type: String},
     role: [{type: mongoose.Schema.Types.ObjectId, ref:'Role'}]
 },
 {

@@ -36,6 +36,8 @@ router.post('/users/add',setAccessTokenRefresh,passport.authenticate('jwt',{ ses
 router.get('/user/detail/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.userDetail);
 router.put('/user/update/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.updateUser);
 router.delete('/user/delete/:id',setAccessTokenRefresh ,passport.authenticate('jwt', { session: false }),userController.deleteUser);
+router.put('/profile/edit/:id',setAccessTokenRefresh,passport.authenticate('jwt',{session:false}),upload.single('image'), userController.editProfile);
+router.put('/change-password/:id',setAccessTokenRefresh,passport.authenticate('jwt',{session:false}),userController.changePassword);
 
 
 // Permission Routes

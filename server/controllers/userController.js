@@ -3,6 +3,7 @@ import userModel from "../models/users.js";
 import generator from "generate-password";
 import bcrypt from "bcrypt";
 import WelcomeEmail from "../config/welcomeEmail.js";
+import passport from "passport";
 class userController {
     static getUsers = async(req,res) => {
         try {
@@ -165,6 +166,65 @@ class userController {
                 message: "Something went wrong!",
                 error: error
             })
+        }
+    }
+    static editProfile = async(req,res)=>{
+        try {
+            const {id} = req.params;
+            const {firstname,lastname} = req.body;
+               // Server-side validations
+               if (!firstname || !lastname) {
+                if (req.file) {
+                    fs.unlinkSync(req.file.path); // Remove the uploaded file if validation fails
+                }
+                return res.status(400).json({ message: "First and Last Name required" });
+            }
+            const image = req.file ? `/uploads/${req.file.filename}` : null;
+            const isExist = await userModel.findOne({_id:id});
+            if(!isExist){
+                return res.status(404).json({status:"Failed",message:"User Not Found!"})
+            }
+            await userModel.findByIdAndUpdate(id,{
+                firstname:firstname,
+                lastname: lastname,
+                image:image
+            });
+            return res.status(200).json({status:"success",message:"Profile Updated Successfully!"})
+            
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                status: "failed",
+                message: "Something went wrong!",
+                error: error
+            })
+        }
+    }
+    static changePassword = async(req,res)=>{
+        try {
+                const { oldpassword, newpassword} = req.body;
+                const {id} = req.params;
+                const user = await userModel.findOne({_id:id});
+                if(!user){
+                    return res.status(404).json({status:"Failed",message:"User Not Found!"})
+                }
+                const IsPasswordMatch = await bcrypt.compare(oldpassword,user.password);
+                if(!IsPasswordMatch){
+                    return res.status(422).json({status:"failed",message:"Old Password id wrong"});
+                }
+                const newPasswordHashed = await bcrypt.hash(newpassword,10);
+                await userModel.findByIdAndUpdate(id,{
+                    password: newPasswordHashed
+                })
+                return res.status(200).json({status:"success",message:"Password Updated Successfully!"})
+
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({
+                status: "failed",
+                message: "Something went wrong!",
+                error: error
+            }) 
         }
     }
 }

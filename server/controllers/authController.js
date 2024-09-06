@@ -93,6 +93,7 @@ class authController {
                     email: user.email,
                     firstname: user.firstname,
                     lastname: user.lastname,
+                    image: user.image,
                     role: user.role.map(role => ({
                         id: role._id,
                         name: role.name,
