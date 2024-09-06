@@ -29,6 +29,11 @@ export const EditUserSchema = Yup.object({
     role: Yup.string().required('Role is required')
 
 })
+export const EditProfileSchema = Yup.object({
+    firstname: Yup.string().required('First name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
+    lastname: Yup.string().required('Last name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
+
+})
 export const AddUserSchema = Yup.object({
     firstname: Yup.string().required('First name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
     lastname: Yup.string().required('Last name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
@@ -61,6 +66,8 @@ export const EditProductSchema = Yup.object({
     category: Yup.string().required('Category is required'),
    
 })
+
+
 
 export const PermissionSchema = Yup.object({
     name: Yup.string().required('Permission Name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),

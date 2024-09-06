@@ -30,6 +30,7 @@ import EditProduct from "./dashboard/pages/product/EditProduct";
 import AddProduct from "./dashboard/pages/product/AddProduct";
 import UserDashboardLayout from "./components/Layout/UserDashboardLayout";
 import UserDashboard from "./dashboard/UserDashboard";
+import ChangePassword from "./dashboard/profilePages/ChangePassword";
 function App() {
   return (
     <>
@@ -69,7 +70,8 @@ function App() {
             <Route path="products/edit/:id" element={<EditProduct />} />
           </Route>
           <Route element={<UserDashboardLayout />}>
-            <Route path="user" element={<UserDashboard />} />
+            <Route path="profile" element={<UserDashboard />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </Route>
         </Route>
         {/* User profile */}

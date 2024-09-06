@@ -19,12 +19,11 @@ const PrivateRoute = () => {
 
   // Determine the user's role
   const userRole = auth.user.role[0]['name'];
-  console.log(userRole)
   // Render the appropriate dashboard or redirect if no role matches
   if (userRole === 'admin') {
     return  <Outlet />;
   } else if (userRole === 'user') {
-    console.log(userRole);
+  
     return  <Outlet />;
   } else {
     return <Navigate to="/" />;
