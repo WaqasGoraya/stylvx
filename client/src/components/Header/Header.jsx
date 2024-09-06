@@ -4,13 +4,18 @@ import { createPortal } from 'react-dom';
 import LoginModal from "../../pages/LoginModal"
 import { useAuth } from "../../context/authContext";
 import useLogout from "../../hooks/useLogout";
+import ShowImage from "../Images/ShowImage";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const [auth,setAuth] = useAuth();
   const logout = useLogout();
 
+  const toggleMenu = () => {
+    setIsActive(!isActive);
+};
   const handleScroll = () => {
     if (window.scrollY > 50) {
       setScrolled(true);
@@ -70,17 +75,43 @@ const Header = () => {
               </button>
             </div>
           </>) : (<>
-            <div className="btn-sec">
-              <button  className="sign-in-btn" onClick={logout}>
-                <svg className="sign-in-svg" width="20" height="20" viewBox="0 0 27 23" fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M20.7394 11.5C20.7394 11.8115 20.6322 12.081 20.4178 12.3086L11.2095 22.0836C10.9951 22.3112 10.7412 22.425 10.4478 22.425C10.1544 22.425 9.90044 22.3112 9.68604 22.0836C9.47163 21.856 9.36442 21.5865 9.36442 21.275V16.1H1.78109C1.48768 16.1 1.23378 15.9862 1.01937 15.7586C0.804959 15.531 0.697754 15.2615 0.697754 14.95V8.05C0.697754 7.73854 0.804959 7.46901 1.01937 7.24141C1.23378 7.0138 1.48768 6.9 1.78109 6.9H9.36442V1.725C9.36442 1.41354 9.47163 1.14401 9.68604 0.916406C9.90044 0.688802 10.1544 0.575 10.4478 0.575C10.7412 0.575 10.9951 0.688802 11.2095 0.916406L20.4178 10.6914C20.6322 10.919 20.7394 11.1885 20.7394 11.5ZM26.6978 5.175V17.825C26.6978 19.2505 26.221 20.4694 25.2674 21.4816C24.3139 22.4939 23.1656 23 21.8228 23H16.4061C16.2594 23 16.1324 22.9431 16.0252 22.8293C15.918 22.7155 15.8644 22.5807 15.8644 22.425C15.8644 22.3771 15.8588 22.2573 15.8475 22.0656C15.8362 21.874 15.8334 21.7152 15.839 21.5895C15.8447 21.4637 15.8616 21.3229 15.8898 21.1672C15.918 21.0115 15.9744 20.8947 16.0591 20.8168C16.1437 20.7389 16.2594 20.7 16.4061 20.7H21.8228C22.5675 20.7 23.2051 20.4185 23.7355 19.8555C24.2659 19.2924 24.5311 18.6156 24.5311 17.825V5.175C24.5311 4.38438 24.2659 3.70755 23.7355 3.14453C23.2051 2.58151 22.5675 2.3 21.8228 2.3H16.5415L16.3468 2.28203L16.1522 2.22812L16.0168 2.1293L15.8983 1.96758L15.8644 1.725C15.8644 1.67708 15.8588 1.55729 15.8475 1.36563C15.8362 1.17396 15.8334 1.01523 15.839 0.889453C15.8447 0.763672 15.8616 0.622917 15.8898 0.467187C15.918 0.311458 15.9744 0.194661 16.0591 0.116797C16.1437 0.0389323 16.2594 0 16.4061 0H21.8228C23.1656 0 24.3139 0.50612 25.2674 1.51836C26.221 2.5306 26.6978 3.74948 26.6978 5.175Z"
-                    fill="white" />
-                </svg>
-                LOGOUT
-              </button>
-            </div>
+            <div className="d-flex align-items-center gap-3 flex-wrap">
+                <div className="profiles-sec">
+                  <nav>
+                    <div className="menu-toggle"></div>
+                    <div className="profile" onClick={toggleMenu}>
+                      <div className="user d-flex align-items-center gap-2">
+                        <div className="img-box">
+                        <ShowImage className="img-fluid" alt="user-image" imagePath={auth.user.image || '/uploads/user.png'}/>
+                        </div>
+                        <span className="prof-name">{`${auth.user.firstname}  ${auth.user.lastname}`}</span>
+                      </div>
+                      <div className={`menu ${isActive ? 'active' : ''}`}>
+                        <ul className="ps-0">
+                          <li>
+                            <Link to={auth.user.role[0]['name'] == 'admin' ? '/dashboard/admin' : '/dashboard/profile' }>
+                              <i className="fa fa-user"></i>&nbsp;Profile
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="#" onClick={logout}>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 512 512"
+                              >
+                                <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z" />
+                              </svg>
+                              &nbsp;Sign Out
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </nav>
+                </div>
+              </div>
           </>) }
 
           </div>

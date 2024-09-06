@@ -34,6 +34,12 @@ export const EditProfileSchema = Yup.object({
     lastname: Yup.string().required('Last name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
 
 })
+export const ChangePasswordSchema = Yup.object({
+    oldpassword: Yup.string().required('Password is required').min(8,'Password Too Short!').max(20,'Password Too Long!'),
+    newpassword: Yup.string().required('Password is required').min(8,'Password Too Short!').max(20,'Password Too Long!'),
+    confirm_newpassword: Yup.string().required('Confirm Password is required').oneOf([Yup.ref("newpassword"), null], "New Password and Confirm New Password doesn't match"),
+
+})
 export const AddUserSchema = Yup.object({
     firstname: Yup.string().required('First name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),
     lastname: Yup.string().required('Last name is required').max(20,'Cannot Exceed 20 Characters').min(3,'Too Short!'),

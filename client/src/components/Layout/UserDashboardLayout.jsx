@@ -8,9 +8,9 @@ const UserDashboardLayout = () => {
   return (
     <>
       <DashboardHeader />
-      <section class="dashboard-sec" id="edit-profile-section">
-        <div class="container">
-          <div class="row">
+      <section className="dashboard-sec" id="edit-profile-section">
+        <div className="container">
+          <div className="row">
             <Sidebar />
             <Outlet />
           </div>
