@@ -48,9 +48,11 @@ const Users = () => {
     };
     getUsers();
   }, []);
+  if (loading) {
+    return <Spiner />;
+  }
   return (
     <>
-      {loading ? <Spiner /> : ""}
       <div className="col-lg-9">
       <div className="d-flex flex-row flex-wrap align-items-center justify-content-center justify-content-sm-between gy-4 pt-5">
             <h5 className="fw-bold text-uppercase">User Management</h5>

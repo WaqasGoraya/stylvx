@@ -58,7 +58,6 @@ app.get('/auth/google', passport.authenticate('google', { session: false, scope:
     //   res.redirect('/');
     });
 
-console.log(`Server restarted`)
 
 app.listen(port,()=>{
     console.log(`http://localhost:${port}`);
