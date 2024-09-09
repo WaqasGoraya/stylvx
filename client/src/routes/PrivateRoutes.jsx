@@ -7,24 +7,22 @@ import Spiner from "../components/Loader/Spiner";
 const PrivateRoute = () => {
   const [auth, loading] = useAuth(); // Destructure loading from the context
 
-  // Display a loader while authentication status is being determined
-  if (!auth.user && loading) {
+  // Show spinner while authentication status is loading
+  if (loading) {
     return <Spiner />;
   }
 
-  // Redirect if the user is not authenticated
+  // Redirect to home page if the user is not authenticated
   if (!auth.user) {
     return <Navigate to="/" />;
   }
 
   // Determine the user's role
   const userRole = auth.user.role[0]['name'];
+
   // Render the appropriate dashboard or redirect if no role matches
-  if (userRole === 'admin') {
-    return  <Outlet />;
-  } else if (userRole === 'user') {
-  
-    return  <Outlet />;
+  if (userRole === 'admin' || userRole === 'user') {
+    return <Outlet />;
   } else {
     return <Navigate to="/" />;
   }

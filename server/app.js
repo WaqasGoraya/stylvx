@@ -45,7 +45,7 @@ app.use('/api',routes)
 app.get('/auth/google', passport.authenticate('google', { session: false, scope: ['profile','email'] }));
   
   app.get('/auth/google/callback', 
-    passport.authenticate('google', {session:false, failureRedirect: '/login' }),
+    passport.authenticate('google', {session:false, failureRedirect: '/' }),
     function(req, res) {
         const {user, accesstoken, refreshtoken} = req.user;
         TokenCookies(res,accesstoken,refreshtoken);
