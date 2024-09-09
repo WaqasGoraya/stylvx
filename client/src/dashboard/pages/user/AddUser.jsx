@@ -83,11 +83,11 @@ const AddUser = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.errors.firstname && (
+                  {formik.errors.firstname && formik.touched.firstname ?(
                     <div className="text-sm text-danger">
                       {formik.errors.firstname}
                     </div>
-                  )}
+                  ): ''}
                 </div>
                 <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start px-3">
                   <label htmlFor="lastname">LastName</label>
@@ -98,11 +98,11 @@ const AddUser = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.errors.lastname && (
+                  {formik.errors.lastname && formik.touched.lastname ?(
                     <div className="text-sm text-danger">
                       {formik.errors.lastname}
                     </div>
-                  )}
+                  ):''}
                 </div>
                 <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start px-3">
                   <label htmlFor="email">Email</label>
@@ -113,11 +113,11 @@ const AddUser = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.errors.email && (
+                  {formik.errors.email && formik.touched.email ?(
                     <div className="text-sm text-danger">
                       {formik.errors.email}
                     </div>
-                  )}
+                  ):''}
                 </div>
                 <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start px-3">
                   <label htmlFor="role">Role</label>
@@ -127,18 +127,18 @@ const AddUser = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   >
-                    <option value="">Select Role</option>
+                    <option disabled selected>Select Role</option>
                     {userRoles.map((role) => (
                       <option key={role._id} value={role._id}>
                         {role.name}
                       </option>
                     ))}
                   </select>
-                  {formik.errors.role && (
+                  {formik.errors.role && formik.touched.role ?(
                     <div className="text-sm text-danger">
                       {formik.errors.role}
                     </div>
-                  )}
+                  ):''}
                 </div>
               </div>
               <div className="user-detail-submit-button text-center py-5">

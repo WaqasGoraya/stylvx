@@ -37,7 +37,7 @@ const AddProduct = ({ close, onUpdate }) => {
     category: "",
     image: "",
   };
-  const { values, errors, handleChange, handleBlur, handleSubmit, setFieldValue } = useFormik({
+  const { values, errors, touched,handleChange, handleBlur, handleSubmit, setFieldValue } = useFormik({
     initialValues: initialValues,
     validationSchema: AddProductSchema,
     onSubmit: async (values) => {
@@ -110,11 +110,11 @@ const AddProduct = ({ close, onUpdate }) => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                           />
-                          {errors.name && (
+                          {errors.name && touched.name ?(
                             <div className="text-sm text-danger">
                               {errors.name}
                             </div>
-                          )}
+                          ):''}
                         </div>
                         <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start">
                           <label htmlFor="">Category</label>
@@ -125,16 +125,16 @@ const AddProduct = ({ close, onUpdate }) => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                           >
-                            <option value="">Select Category</option>
+                            <option disabled selected>Select Category</option>
                             {categories?.map((category)=>(
                               <option value={category._id} key={category._id}>{category.name}</option>
                             ))}
                           </select>
-                          {errors.category && (
+                          {errors.category && touched.category ?(
                             <div className="text-sm text-danger">
                               {errors.category}
                             </div>
-                          )}
+                          ):''}
                         </div>
                         <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start">
                           <label htmlFor="">Price</label>
@@ -145,11 +145,11 @@ const AddProduct = ({ close, onUpdate }) => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                           />
-                          {errors.price && (
+                          {errors.price && touched.price?(
                             <div className="text-sm text-danger">
                               {errors.price}
                             </div>
-                          )}
+                          ):''}
                         </div>
                         <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start">
                           <label htmlFor="">Stock</label>
@@ -160,11 +160,11 @@ const AddProduct = ({ close, onUpdate }) => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                           />
-                          {errors.stock && (
+                          {errors.stock && touched.price?(
                             <div className="text-sm text-danger">
                               {errors.stock}
                             </div>
-                          )}
+                          ):''}
                         </div>
                         <div className="col-12 col-lg-12 col-md-6 col-sm-12 text-start">
                           <div className="mb-3">
@@ -184,11 +184,11 @@ const AddProduct = ({ close, onUpdate }) => {
                               }}
                             />
                           </div>
-                          {errors.image && (
+                          {errors.image && touched.image?(
                             <div className="text-sm text-danger">
                               {errors.image}
                             </div>
-                          )}
+                          ):''}
                         </div>
                       </div>
                       <div className="user-detail-submit-button text-center py-3">
