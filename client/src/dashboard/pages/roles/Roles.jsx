@@ -109,7 +109,7 @@ const Roles = () => {
         setPermissions(permissionsRes.data.permissions); // Assuming this is correct, but if you meant `permissions`, update the field accordingly
       }
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error(`Something went wrong! ${error?.response?.data?.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }

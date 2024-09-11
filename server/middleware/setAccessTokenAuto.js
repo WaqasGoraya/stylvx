@@ -2,38 +2,57 @@ import isTokenExpired from "../utils/isTokenExpired.js";
 import refreshAccessToken from "../utils/refreshAccessToken.js";
 import TokenCookies from "../utils/setTokenCookies.js";
 
-const setAccessTokenRefresh = async (req,res,next) => {
+const setAccessTokenRefresh = async (req, res, next) => {
     try {
-        const accesstoken = req.cookies.accessToken;
-       
-        if(accesstoken || !isTokenExpired(accesstoken)){
-            // Set access token to the header
-            req.headers['authorization'] = `Bearer ${accesstoken}`;
+        const accessToken = req.cookies.accessToken;
+        const refreshToken = req.cookies.refreshToken;
+
+        // If the access token exists and is valid, continue
+        if (accessToken && !isTokenExpired(accessToken)) {
+            // Add the access token to the request header and move on
+            req.headers['authorization'] = `Bearer ${accessToken}`;
+            return next(); // Exit the function
         }
 
-        if(!accesstoken || isTokenExpired(accesstoken)){
-            // get new access token using refresh token
-            const refreshtoken = req.cookies.refreshToken;
-            if(!refreshtoken){
-                throw new Error('Refresh token is missing');
-            }
-             
-            // Get New access token using refresh token
-             const {newAccessToken, newRefreshToken} =  await refreshAccessToken(req,res);
-           
-             // set new access token to cookies
-            TokenCookies(res,newAccessToken,newRefreshToken);
-
-            // Add the access token to authorization headers
-
-            req.headers['authorization'] = `Bearer ${newAccessToken}`;
+        // If no access token or it is expired, check for refresh token
+        if (!refreshToken) {
+            // No refresh token found, respond with 401 Unauthorized
+            return res.status(401).json({
+                status: "Failed",
+                message: "Refresh token is missing"
+            });
         }
-        next();
+
+        // If refresh token exists, attempt to refresh the access token
+        const { newAccessToken, newRefreshToken } = await refreshAccessToken(req, res);
+
+        if (!newAccessToken || !newRefreshToken) {
+            // Refresh token invalid or something went wrong, return error
+            return res.status(500).json({
+                status: "Failed",
+                message: "Unable to refresh access token"
+            });
+        }
+
+        // Set new tokens in the cookies
+        TokenCookies(res, newAccessToken, newRefreshToken);
+
+        // Add the new access token to authorization headers
+        req.headers['authorization'] = `Bearer ${newAccessToken}`;
+
+        // Proceed to the next middleware or route handler
+        return next(); // Always return to prevent further execution
     } catch (error) {
-        console.error('Error adding access token to header:', error.message);
-        // Handle the error, such as returning an error response or redirecting to the login page
-        // res.status(401).json({ error: 'Unauthorized', message: 'Access token is missing or invalid' });
+        console.error('Error adding access token to header auto:', error.message);
+
+        // Catch block: Ensure no further headers are modified after sending a response
+        if (!res.headersSent) {  // Check if headers have already been sent
+            return res.status(500).json({
+                status: "Failed",
+                message: "Internal server error"
+            });
+        }
     }
-}
+};
 
 export default setAccessTokenRefresh;

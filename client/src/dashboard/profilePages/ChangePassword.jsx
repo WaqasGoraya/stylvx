@@ -17,7 +17,7 @@ const ChangePassword = () => {
     newpassword: "",
     confirm_newpassword:""
   }
-  const {values,errors,handleChange,handleSubmit, resetForm} = useFormik({
+  const {values,errors, touched, handleChange,handleSubmit, handleBlur,resetForm} = useFormik({
     initialValues: initialValues,
     validationSchema: ChangePasswordSchema,
     onSubmit:async(values)=>{
@@ -48,8 +48,8 @@ const ChangePassword = () => {
                   <div className="row gy-5 justify-content-center align-items-center justify-content-between p-2">
                     <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start px-3">
                       <label htmlFor="">Old password</label>
-                      <input className="w-100 py-2  rounded-3 px-3 form-control" type="password" name="oldpassword" onChange={handleChange}/>
-                      {errors.oldpassword && (
+                      <input className="w-100 py-2  rounded-3 px-3 form-control" type="password" name="oldpassword" onChange={handleChange} onBlur={handleBlur}/>
+                      {errors.oldpassword && touched.oldpassword &&(
                       <div className="text-sm text-danger">
                         {errors.oldpassword}
                       </div>
@@ -57,8 +57,8 @@ const ChangePassword = () => {
                     </div>
                     <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start px-3">
                       <label htmlFor="">New password</label>
-                      <input className="w-100 py-2  rounded-3 px-3 form-control" type="password" name="newpassword" onChange={handleChange}/>
-                      {errors.newpassword && (
+                      <input className="w-100 py-2  rounded-3 px-3 form-control" type="password" name="newpassword" onChange={handleChange} onBlur={handleBlur}/>
+                      {errors.newpassword && touched.newpassword && (
                       <div className="text-sm text-danger">
                         {errors.newpassword}
                       </div>
@@ -66,8 +66,8 @@ const ChangePassword = () => {
                     </div>
                     <div className="col-12 col-lg-6 col-md-6 col-sm-12 text-start px-3">
                       <label htmlFor="">Confirm New password</label>
-                      <input className="w-100 py-2  rounded-3 px-3 form-control" type="password" name="confirm_newpassword" onChange={handleChange}/>
-                      {errors.confirm_newpassword && (
+                      <input className="w-100 py-2  rounded-3 px-3 form-control" type="password" name="confirm_newpassword" onChange={handleChange} onBlur={handleBlur}/>
+                      {errors.confirm_newpassword && touched.confirm_newpassword && (
                       <div className="text-sm text-danger">
                         {errors.confirm_newpassword}
                       </div>
