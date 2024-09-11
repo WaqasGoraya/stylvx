@@ -20,18 +20,16 @@ const refreshAccessToken = async (req, res) => {
         }
     
         const userRefreshToken = await refreshTokenModel.findOne({ userId: tokenDetails._id })
-    
+       
         if (oldRefreshToken !== userRefreshToken.token) {
           return res.status(401).send({ status: "failed", message: "Unauthorized access" });
         }
 
         // Generate new tokens
         const { accesstoken, refreshtoken } = await generateTokens(user);
-
+      
         // Optionally: update the user's refresh token in the database (token rotation)
-        userRefreshToken.token = refreshtoken;
-        await userRefreshToken.save();
-
+    
         // Return new tokens (you may return in body if necessary)
         return {
             newAccessToken: accesstoken,

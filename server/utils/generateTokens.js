@@ -8,7 +8,7 @@ const generateTokens = async (user) => {
         const payload = {_id: user._id, email: user.email}
 
         // Access Token
-        const accesstoken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, {expiresIn: '1m'});
+        const accesstoken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, {expiresIn: '60m'});
 
         // Refresh Token
         const refreshtoken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET, {expiresIn: '7d'});
@@ -20,16 +20,17 @@ const generateTokens = async (user) => {
         await new refreshTokenModel({userId: user._id, token: refreshtoken}).save();
 
         // return data
-        return Promise.resolve({accesstoken,refreshtoken});
+        // return Promise.resolve({accesstoken,refreshtoken});
+        return {
+            accesstoken,
+            refreshtoken
+        }
 
     } catch (error) {
-        // return Promise.reject(error);
-        console.log('GenerateTokens:',error);
-        return response.status(500).json({
-            status: "Failed",
-            message: "Unable to process your request",
-            error: error
-        })
+        console.error('Error in generateTokens:', error);
+
+        // Rethrow the error so the calling function can handle it
+        throw new Error('Unable to process your request to generate tokens');
     }
 }
 

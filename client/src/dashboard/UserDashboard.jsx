@@ -5,14 +5,14 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/authContext";
 import { EditProfileSchema } from "../formValidations/Schema";
 import Spiner from "../components/Loader/Spiner";
-import ShowImage from "../components/Images/ShowImage";
+import ShowImage from "../components/Images/ShowImage"; // Your ShowImage component
 
 const UserDashboard = () => {
   const [auth] = useAuth();
   const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState(null);
   const id = auth?.user?.id || "";
-  const [preview, setPreview] = useState("/images/user.png"); // Default profile image
+  const [preview, setPreview] = useState(""); // Set initial preview to an empty string
 
   // File input reference
   const fileInputRef = useRef(null);
@@ -46,12 +46,13 @@ const UserDashboard = () => {
             firstname: userData.firstname || "",
             lastname: userData.lastname || "",
             email: userData.email || "",
-            image: userData.image || "",
+            image: userData.image || "", // Fetch image from backend
           });
-          // Set image preview to the current image from the backend
-          if (userData.image) {
-            setPreview(userData.image);
-          }
+
+          // Set preview to the image fetched from the server, if it exists
+          if (!userData.image) {
+            setPreview("/images/user.png"); // Default image if none is found
+          } 
         }
       } catch (error) {
         toast.error(error.response.data.message);
@@ -67,7 +68,7 @@ const UserDashboard = () => {
       firstname: "",
       lastname: "",
       email: "",
-      image: "",
+      image: "", // Keep image field in initialValues
     },
     enableReinitialize: true,
     validationSchema: EditProfileSchema,
@@ -118,21 +119,18 @@ const UserDashboard = () => {
             <form onSubmit={formik.handleSubmit}>
               <div className="profileimgage-outer p-3 position-relative">
                 {/* Image Preview */}
-                {formik.values.image ? (
-                  <>
-                    <ShowImage
-                      imagePath={formik.values.image}
-                      className={"img-fluid"}
-                    />
-                  </>
+                {preview ? (
+                  <img
+                    className="img-fluid"
+                    src={preview} // Show the updated preview if new image selected
+                    alt="Profile Preview"
+                  />
                 ) : (
-                  <>
-                    <img
-                      className="img-fluid"
-                      src={preview}
-                      alt="Profile Preview"
-                    />
-                  </>
+                  <ShowImage
+                    imagePath={formik.values.image} // Show image from the server if no new image is uploaded
+                    alt="Profile Image"
+                    className="img-fluid"
+                  />
                 )}
 
                 <div
