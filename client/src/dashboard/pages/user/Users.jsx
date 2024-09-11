@@ -42,7 +42,7 @@ const Users = () => {
         }
       } catch (error) {
         console.log(error.message);
-        toast.error("Something went wrong!");
+        toast.error(`Something went wrong! ${error?.response?.data?.message || 'Unknown error'}`);
       }
       setLoading(false);
     };

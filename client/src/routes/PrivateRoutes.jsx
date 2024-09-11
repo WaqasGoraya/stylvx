@@ -6,12 +6,12 @@ import Spiner from "../components/Loader/Spiner";
 // PrivateRoute Component
 const PrivateRoute = () => {
   const [auth, loading] = useAuth(); // Destructure loading from the context
-
+  console.log(auth)
   // Show spinner while authentication status is loading
-  if (loading) {
+  if (!auth.user && loading) {
     return <Spiner />;
   }
-
+console.log(auth)
   // Redirect to home page if the user is not authenticated
   if (!auth.user) {
     return <Navigate to="/" />;

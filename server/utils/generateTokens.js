@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config();
 import refreshTokenModel from '../models/userrefreshToken.js';
-import { response } from 'express';
 
 const generateTokens = async (user) => {
     try {
@@ -24,7 +23,8 @@ const generateTokens = async (user) => {
         return Promise.resolve({accesstoken,refreshtoken});
 
     } catch (error) {
-        console.log(error);
+        // return Promise.reject(error);
+        console.log('GenerateTokens:',error);
         return response.status(500).json({
             status: "Failed",
             message: "Unable to process your request",

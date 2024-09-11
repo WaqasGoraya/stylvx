@@ -17,7 +17,7 @@ const AuthProvider = ({children}) => {
                 user: ParseData.user,
             });
         }
-
+        console.log(auth)
         // Ensure that loading is set to false only after checking localStorage
         setLoading(false);
         // eslint-disable-next-line
